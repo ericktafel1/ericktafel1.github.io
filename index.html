@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name | Cybersecurity Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-green: #00ff41;
+            --dark-bg: #0a0e27;
+            --card-bg: #1a1f3a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header/Hero Section */
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
+            border-bottom: 2px solid var(--neon-green);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .roles {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .role-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Terminal Section */
+        .terminal {
+            background: #000;
+            border: 2px solid var(--neon-green);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--neon-green);
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--neon-green);
+        }
+
+        .terminal-output {
+            color: var(--neon-green);
+            font-size: 0.9rem;
+            min-height: 200px;
+        }
+
+        .terminal-line {
+            margin: 0.5rem 0;
+        }
+
+        .prompt {
+            color: var(--neon-green);
+        }
+
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        #terminal-command {
+            background: transparent;
+            border: none;
+            color: var(--neon-green);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            outline: none;
+            flex: 1;
+            margin-left: 0.5rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--neon-green);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Content Sections */
+        section {
+            margin: 3rem 0;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--neon-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-meta {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(0, 255, 65, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-category {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .skill-category h3 {
+            color: var(--neon-green);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category li {
+            padding: 0.25rem 0;
+            color: var(--text-secondary);
+        }
+
+        .skill-category li:before {
+            content: "▹ ";
+            color: var(--neon-green);
+        }
+
+        /* Contact Links */
+        .contact-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            color: var(--neon-green);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--neon-green);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--neon-green);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Name</h1>
+        <p class="subtitle">Cybersecurity Engineer</p>
+        <div class="roles">
+            <span class="role-tag">Penetration Tester</span>
+            <span class="role-tag">Offensive Security</span>
+            <span class="role-tag">Red Team</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Interactive Terminal -->
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-btn"></div>
+                <div class="terminal-btn"></div>
+                <div class="terminal-btn"></div>
+            </div>
+            <div class="terminal-output" id="output">
+                <div class="terminal-line"><span class="prompt">visitor@portfolio:~$</span> cat about.txt</div>
+                <div class="terminal-line">Cybersecurity professional specializing in offensive security and penetration testing.</div>
+                <div class="terminal-line">Currently focused on Active Directory exploitation, C2 operations, and cloud security.</div>
+                <div class="terminal-line">Avionics and IP penetration tester with certifications in OSCP, PNPT, and PJPT.</div>
+                <div class="terminal-line" style="margin-top: 1rem;"><span class="prompt">visitor@portfolio:~$</span> ls commands</div>
+                <div class="terminal-line">Available commands: about, skills, projects, writeups, certifications, contact</div>
+            </div>
+            <div class="terminal-input">
+                <span class="prompt">visitor@portfolio:~$</span>
+                <input type="text" id="terminal-command" placeholder="Try typing a command..." autocomplete="off">
+                <span class="cursor"></span>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <section id="about">
+            <h2>$ whoami</h2>
+            <p>Cybersecurity engineer with expertise in offensive security, penetration testing, and red team operations. Specializing in Active Directory exploitation, network penetration, and avionics security testing. Passionate about breaking things to make them more secure.</p>
+        </section>
+
+        <!-- Certifications -->
+        <section id="certifications">
+            <h2>$ cat certifications.txt</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>OSCP</h3>
+                    <p class="card-meta">Offensive Security Certified Professional</p>
+                    <p>Practical penetration testing certification focused on exploit development and privilege escalation.</p>
+                </div>
+                <div class="card">
+                    <h3>PNPT</h3>
+                    <p class="card-meta">Practical Network Penetration Tester</p>
+                    <p>Real-world network penetration testing with focus on Active Directory.</p>
+                </div>
+                <div class="card">
+                    <h3>PJPT</h3>
+                    <p class="card-meta">Practical Junior Penetration Tester</p>
+                    <p>Foundational penetration testing skills and methodology.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills">
+            <h2>$ cat skills.conf</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Penetration Testing</h3>
+                    <ul>
+                        <li>Network Penetration Testing</li>
+                        <li>Web Application Security</li>
+                        <li>Vulnerability Assessment</li>
+                        <li>Exploit Development</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Active Directory</h3>
+                    <ul>
+                        <li>Kerberoasting</li>
+                        <li>Pass-the-Hash</li>
+                        <li>Mimikatz</li>
+                        <li>Bloodhound</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Tools & Frameworks</h3>
+                    <ul>
+                        <li>Metasploit</li>
+                        <li>Burp Suite</li>
+                        <li>Nmap</li>
+                        <li>Cobalt Strike</li>
+                    </ul>
+                </div>
+                <div class="skill-category">
+                    <h3>Programming</h3>
+                    <ul>
+                        <li>Python</li>
+                        <li>PowerShell</li>
+                        <li>Bash</li>
+                        <li>C/C++</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Writeups/Projects -->
+        <section id="writeups">
+            <h2>$ ls -la writeups/</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>HTB Machine: [Name]</h3>
+                    <p class="card-meta">HackTheBox • Retired</p>
+                    <p>Detailed walkthrough of exploiting [vulnerability] to gain initial access and escalating privileges through [technique].</p>
+                    <div class="tags">
+                        <span class="tag">Active Directory</span>
+                        <span class="tag">Privilege Escalation</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Custom Tool: [Tool Name]</h3>
+                    <p class="card-meta">Python • GitHub</p>
+                    <p>Automated reconnaissance tool for [specific purpose]. Features include [key features].</p>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Automation</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Pro Lab: Dante</h3>
+                    <p class="card-meta">HackTheBox Pro Lab</p>
+                    <p>Complete walkthrough of HTB's Dante Pro Lab showcasing real-world network penetration testing methodology.</p>
+                    <div class="tags">
+                        <span class="tag">Network Pentest</span>
+                        <span class="tag">Pivoting</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+            <h2>$ cat contact.txt</h2>
+            <div class="contact-links">
+                <a href="https://github.com/yourusername" class="contact-link" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/yourprofile" class="contact-link" target="_blank">LinkedIn</a>
+                <a href="https://app.hackthebox.com/profile/yourid" class="contact-link" target="_blank">HackTheBox</a>
+                <a href="mailto:your.email@example.com" class="contact-link">Email</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your Name | Built with terminal vibes and neon dreams</p>
+    </footer>
+
+    <script>
+        const terminalInput = document.getElementById('terminal-command');
+        const output = document.getElementById('output');
+
+        let currentDir = '/home/visitor/portfolio';
+        
+        const fileSystem = {
+            '/home/visitor/portfolio': ['about.txt', 'skills.conf', 'projects/', 'writeups/', 'certifications.txt', 'contact.txt', '.hidden/'],
+            '/home/visitor/portfolio/.hidden': ['docs/'],
+            '/home/visitor/portfolio/.hidden/docs': ['archive/'],
+            '/home/visitor/portfolio/.hidden/docs/archive': ['old_backups/'],
+            '/home/visitor/portfolio/.hidden/docs/archive/old_backups': ['temp/'],
+            '/home/visitor/portfolio/.hidden/docs/archive/old_backups/temp': ['misc/'],
+            '/home/visitor/portfolio/.hidden/docs/archive/old_backups/temp/misc': ['secret.txt']
+        };
+
+        const fileContents = {
+            'secret.txt': '5f4dcc3b5aa765d61d8327deb882cf99'
+        };
+
+        const commands = {
+            help: 'Available commands: about, skills, projects, writeups, certifications, contact, clear, help, ls, cd, cat, pwd, whoami, find',
+            about: 'Cybersecurity professional specializing in offensive security and penetration testing. Currently focused on Active Directory exploitation, C2 operations, and cloud security.',
+            skills: 'Core Skills: Penetration Testing, Active Directory Exploitation, Network Security, Web App Security, C2 Operations, Cloud Security (Azure/AWS), Python/PowerShell Scripting',
+            projects: 'Check out my writeups and projects above! Working on HTB Pro Labs and building security automation tools.',
+            writeups: 'HTB machine writeups, custom tools, and pentest methodologies. Scroll up to see detailed writeups!',
+            certifications: 'OSCP | PNPT | PJPT | Currently pursuing: CRTO',
+            contact: 'GitHub: github.com/yourusername | LinkedIn: linkedin.com/in/yourprofile | HTB: hackthebox.com/profile/yourid',
+            whoami: 'cybersec_engineer'
+        };
+
+        function executeLs(args = '', path = currentDir) {
+            // Parse ls flags
+            const showHidden = args.includes('-a') || args.includes('-la') || args.includes('-al');
+            
+            if (fileSystem[path]) {
+                let files = fileSystem[path];
+                
+                // Filter out hidden files unless -a flag is used
+                if (!showHidden) {
+                    files = files.filter(f => !f.startsWith('.'));
+                }
+                
+                return files.length > 0 ? files.join('  ') : '';
+            }
+            return 'ls: cannot access: No such file or directory';
+        }
+
+        function executeCd(args) {
+            if (!args) {
+                currentDir = '/home/visitor/portfolio';
+                return '';
+            }
+            
+            let newPath;
+            if (args.startsWith('/')) {
+                newPath = args;
+            } else if (args === '..') {
+                const parts = currentDir.split('/').filter(p => p);
+                parts.pop();
+                newPath = '/' + parts.join('/');
+            } else if (args === '.') {
+                return '';
+            } else {
+                newPath = currentDir === '/' ? `/${args}` : `${currentDir}/${args}`;
+            }
+            
+            if (fileSystem[newPath]) {
+                currentDir = newPath;
+                return '';
+            }
+            return `cd: ${args}: No such file or directory`;
+        }
+
+        function executeCat(args) {
+            if (!args) return 'cat: missing file operand';
+            
+            const fileName = args.split('/').pop();
+            
+            if (fileName === 'secret.txt' && currentDir === '/home/visitor/portfolio/.hidden/docs/archive/old_backups/temp/misc') {
+                return fileContents['secret.txt'];
+            }
+            
+            const files = fileSystem[currentDir];
+            if (files && files.includes(fileName)) {
+                if (commands[fileName.replace('.txt', '').replace('.conf', '')]) {
+                    return commands[fileName.replace('.txt', '').replace('.conf', '')];
+                }
+                return `${fileName}: Permission denied or empty file`;
+            }
+            return `cat: ${args}: No such file or directory`;
+        }
+
+        function executeFind(args) {
+            if (!args) return 'find: missing argument';
+            const results = [];
+            for (const path in fileSystem) {
+                fileSystem[path].forEach(file => {
+                    if (file.includes(args) && !file.startsWith('.')) {
+                        results.push(`${path}/${file}`);
+                    }
+                });
+            }
+            return results.length > 0 ? results.join('\n') : `find: '${args}': No such file or directory`;
+        }
+
+        terminalInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const input = terminalInput.value.trim();
+                const command = input.toLowerCase();
+                const parts = input.split(' ');
+                const cmd = parts[0].toLowerCase();
+                const args = parts.slice(1).join(' ');
+                
+                const commandLine = document.createElement('div');
+                commandLine.className = 'terminal-line';
+                const prompt = currentDir.replace('/home/visitor/portfolio', '~');
+                commandLine.innerHTML = `<span class="prompt">visitor@portfolio:${prompt}$</span> ${terminalInput.value}`;
+                output.appendChild(commandLine);
+
+                let response = '';
+
+                if (cmd === 'clear') {
+                    output.innerHTML = '';
+                    terminalInput.value = '';
+                    output.scrollTop = output.scrollHeight;
+                    return;
+                } else if (cmd === 'ls') {
+                    response = executeLs(args, currentDir);
+                } else if (cmd === 'cd') {
+                    response = executeCd(args);
+                } else if (cmd === 'cat') {
+                    response = executeCat(args);
+                } else if (cmd === 'pwd') {
+                    response = currentDir;
+                } else if (cmd === 'find') {
+                    response = executeFind(args);
+                } else if (commands[cmd]) {
+                    response = commands[cmd];
+                } else if (cmd) {
+                    response = `Command not found: ${cmd}. Type 'help' for available commands.`;
+                }
+
+                if (response) {
+                    const responseLine = document.createElement('div');
+                    responseLine.className = 'terminal-line';
+                    responseLine.style.whiteSpace = 'pre-wrap';
+                    responseLine.textContent = response;
+                    output.appendChild(responseLine);
+                }
+
+                terminalInput.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+
+        // Smooth scroll for any internal links you might add
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
