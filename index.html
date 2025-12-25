@@ -194,7 +194,7 @@
 
         .status-ticker {
             display: flex;
-            animation: scroll-left 30s linear infinite;
+            animation: scroll-left 60s linear infinite;
             white-space: nowrap;
         }
 
@@ -857,3 +857,52 @@ input.addEventListener('keydown', (e) => {
     }
 });
 </script>
+
+    <script>
+const input = document.getElementById('terminal-command');
+const output = document.getElementById('output');
+
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // prevent default form behavior
+
+        const command = input.value.trim();
+        if (!command) return;
+
+        // Echo the command in the terminal
+        const line = document.createElement('div');
+        line.classList.add('terminal-line');
+        line.innerHTML = `<span class="prompt">dh4bi@portfolio:~$</span> ${command}`;
+        output.appendChild(line);
+
+        // Handle simple commands
+        const response = document.createElement('div');
+        response.classList.add('terminal-line');
+
+        switch(command.toLowerCase()) {
+            case 'help':
+                response.innerHTML = `Available commands: help, whoami, clear`;
+                break;
+            case 'whoami':
+                response.innerHTML = `dh4bi`;
+                break;
+            case 'clear':
+                output.innerHTML = '';
+                break;
+            default:
+                response.innerHTML = `Command not found: ${command}`;
+        }
+
+        if (command.toLowerCase() !== 'clear') {
+            output.appendChild(response);
+        }
+
+        // Scroll to bottom
+        output.scrollTop = output.scrollHeight;
+
+        // Clear input
+        input.value = '';
+    }
+});
+</script>
+
