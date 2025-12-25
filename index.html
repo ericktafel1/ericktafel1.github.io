@@ -14,7 +14,7 @@
         :root {
             --neon-green: #00ff41;
             --dark-bg: #000000;
-            --card-bg: #1a1f3a;
+            --card-bg: #2c2c2c;
             --text-primary: #e0e0e0;
             --text-secondary: #a0a0a0;
         }
@@ -281,7 +281,7 @@
 <body>
     <header>
         <h1>DH4BI</h1>
-        <p class="subtitle">ALIAS = Erick Tafel</p>
+        <p class="subtitle">QUxJQVMgPSBFcmljayBUYWZlbA==</p>
         <p class="subtitle">Cybersecurity Engineer</p>
         <div class="roles">
             <span class="role-tag">Penetration Tester</span>
@@ -299,7 +299,7 @@
                 <div class="terminal-btn"></div>
             </div>
             <div class="terminal-output" id="output">
-                <div class="terminal-line"><span class="prompt">visitor@portfolio:~$</span> cat about.txt</div>
+                <div class="terminal-line"><span class="prompt">n00b@portfolio:~$</span> cat about.txt</div>
                 <div class="terminal-line">Cybersecurity professional specializing in offensive security and penetration testing.</div>
                 <div class="terminal-line">Currently focused on Active Directory exploitation, C2 operations, and cloud security.</div>
                 <div class="terminal-line">Avionics and IP penetration tester with OSCP+/OSCP, PNPT, PJPT, CASP+, Security+, Network+, A+.</div>
@@ -307,7 +307,7 @@
                 <div class="terminal-line">Available commands: about, skills, projects, writeups, certifications, contact</div>
             </div>
             <div class="terminal-input">
-                <span class="prompt">n00b@dh4bi-domain:~$</span>
+                <span class="prompt">n00b@portfolio:~$</span>
                 <input type="text" id="terminal-command" placeholder="Try typing a command..." autocomplete="off">
                 <span class="cursor"></span>
             </div>
@@ -421,32 +421,32 @@
         <section id="contact">
             <h2>$ cat contact.txt</h2>
             <div class="contact-links">
-                <a href="https://github.com/yourusername" class="contact-link" target="_blank">GitHub</a>
-                <a href="https://www.linkedin.com/in/yourprofile" class="contact-link" target="_blank">LinkedIn</a>
+                <a href="https://github.com/ericktafel1" class="contact-link" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/ericktafel" class="contact-link" target="_blank">LinkedIn</a>
                 <a href="https://app.hackthebox.com/profile/yourid" class="contact-link" target="_blank">HackTheBox</a>
-                <a href="mailto:your.email@example.com" class="contact-link">Email</a>
+                <a href="mailto:tafel_sec@protonmail.com" class="contact-link">Email</a>
             </div>
         </section>
     </div>
 
     <footer>
-        <p>&copy; 2024 Your Name | Built with terminal vibes and neon dreams</p>
+        <p>&copy; 2024 DH4BI | HackThePlanet </p>
     </footer>
 
     <script>
         const terminalInput = document.getElementById('terminal-command');
         const output = document.getElementById('output');
 
-        let currentDir = '/home/visitor/portfolio';
+        let currentDir = '/home/n00b/portfolio';
         
         const fileSystem = {
-            '/home/visitor/portfolio': ['about.txt', 'skills.conf', 'projects/', 'writeups/', 'certifications.txt', 'contact.txt', '.hidden/'],
-            '/home/visitor/portfolio/.hidden': ['docs/'],
-            '/home/visitor/portfolio/.hidden/docs': ['archive/'],
-            '/home/visitor/portfolio/.hidden/docs/archive': ['old_backups/'],
-            '/home/visitor/portfolio/.hidden/docs/archive/old_backups': ['temp/'],
-            '/home/visitor/portfolio/.hidden/docs/archive/old_backups/temp': ['misc/'],
-            '/home/visitor/portfolio/.hidden/docs/archive/old_backups/temp/misc': ['secret.txt']
+            '/home/n00b/portfolio': ['about.txt', 'skills.conf', 'projects/', 'writeups/', 'certifications.txt', 'contact.txt', '.hidden/'],
+            '/home/n00b/portfolio/.hidden': ['docs/'],
+            '/home/n00b/portfolio/.hidden/docs': ['archive/'],
+            '/home/n00b/portfolio/.hidden/docs/archive': ['old_backups/'],
+            '/home/n00b/portfolio/.hidden/docs/archive/old_backups': ['temp/'],
+            '/home/n00b/portfolio/.hidden/docs/archive/old_backups/temp': ['misc/'],
+            '/home/n00b/portfolio/.hidden/docs/archive/old_backups/temp/misc': ['secret.txt']
         };
 
         const fileContents = {
@@ -459,8 +459,8 @@
             skills: 'Core Skills: Penetration Testing, Active Directory Exploitation, Network Security, Web App Security, C2 Operations, Cloud Security (Azure/AWS), Python/PowerShell Scripting',
             projects: 'Check out my writeups and projects above! Working on HTB Pro Labs and building security automation tools.',
             writeups: 'HTB machine writeups, custom tools, and pentest methodologies. Scroll up to see detailed writeups!',
-            certifications: 'OSCP | PNPT | PJPT | Currently pursuing: CRTO',
-            contact: 'GitHub: github.com/yourusername | LinkedIn: linkedin.com/in/yourprofile | HTB: hackthebox.com/profile/yourid',
+            certifications: 'OSCP+/OSCP | PNPT | PJPT | CASP+ | Security+ | Network+ | A+',
+            contact: 'GitHub: github.com/ericktafel1 | LinkedIn: linkedin.com/in/ericktafel | HTB: hackthebox.com/profile/yourid',
             whoami: 'cybersec_engineer'
         };
 
@@ -483,7 +483,7 @@
 
         function executeCd(args) {
             if (!args) {
-                currentDir = '/home/n00b';
+                currentDir = '/home/n00b/portfolio';
                 return '';
             }
             
@@ -512,7 +512,7 @@
             
             const fileName = args.split('/').pop();
             
-            if (fileName === 'secret.txt' && currentDir === '/home/n00b/.hidden/docs/archive/old_backups/temp/misc') {
+            if (fileName === 'secret.txt' && currentDir === '/home/n00b/portfolio/.hidden/docs/archive/old_backups/temp/misc') {
                 return fileContents['secret.txt'];
             }
             
@@ -549,8 +549,8 @@
                 
                 const commandLine = document.createElement('div');
                 commandLine.className = 'terminal-line';
-                const prompt = currentDir.replace('/home/n00b', '~');
-                commandLine.innerHTML = `<span class="prompt">n00b@dh4bi-domain:${prompt}$</span> ${terminalInput.value}`;
+                const prompt = currentDir.replace('/home/n00b/portfolio', '~');
+                commandLine.innerHTML = `<span class="prompt">n00b@portfolio:${prompt}$</span> ${terminalInput.value}`;
                 output.appendChild(commandLine);
 
                 let response = '';
