@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erick Tafel | DH4BI | Cybersecurity Engineer</title>
+    <title>Erick Tafel | Cybersecurity Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -212,7 +212,7 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(-50%);
+                transform: translateX(-100%);
             }
         }
 
@@ -830,3 +830,32 @@
     <script>
         // Glitch text alternating for title
         const glit
+<script>
+const input = document.getElementById('terminal-command');
+const output = document.getElementById('output');
+
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const command = input.value.trim();
+        if (!command) return;
+
+        // Display the command in terminal output
+        const commandLine = document.createElement('div');
+        commandLine.classList.add('terminal-line');
+        commandLine.innerHTML = `<span class="prompt">dh4bi@portfolio:~$</span> ${command}`;
+        output.appendChild(commandLine);
+
+        // Fake response for demo
+        const responseLine = document.createElement('div');
+        responseLine.classList.add('terminal-line');
+        responseLine.textContent = `Command "${command}" not found.`;
+        output.appendChild(responseLine);
+
+        // Scroll to bottom
+        output.scrollTop = output.scrollHeight;
+
+        // Clear input
+        input.value = '';
+    }
+});
+</script>
