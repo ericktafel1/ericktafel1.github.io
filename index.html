@@ -30,11 +30,12 @@
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem; /* Reduced from 2rem to give more space on small screens */
+}
 
 /* Updated Glitch Animation - 8s Loop */
 .glitch-title {
@@ -539,6 +540,36 @@ body {
 footer {
     padding-bottom: 2rem;
 }
+        /* Mobile Optimizations */
+@media (max-width: 768px) {
+    .glitch-title {
+        font-size: 2.5rem; /* Shrink title so it doesn't wrap weirdly */
+        letter-spacing: 2px;
+    }
+
+    header {
+        padding: 1.5rem 1rem;
+    }
+
+    .terminal {
+        height: 400px; /* Shorter terminal for mobile screens */
+        padding: 10px;
+    }
+
+    .terminal-header {
+        padding: 5px;
+    }
+
+    #terminal-command, .prompt {
+        font-size: 0.8rem; /* Smaller text so the prompt fits on one line */
+    }
+
+    /* Ensure the BANNER (ASCII Art) doesn't break the layout */
+    pre {
+        font-size: 8px !important;
+        overflow-x: hidden;
+    }
+}
     </style>
 </head>
 <body>
@@ -909,8 +940,7 @@ async function bootSequence() {
     
     await new Promise(r => setTimeout(r, 500));
     
-    const bannerHTML = `<pre style="font-size: clamp(5px, 1.4vw, 14px); line-height: 1.1; color: var(--neon-green); margin-bottom: 1rem;">${BANNER}</pre>`;
-    print(bannerHTML, "var(--neon-green)", true);
+    const bannerHTML = `<pre style="font-size: clamp(4px, 1.2vw, 14px); line-height: 1; color: var(--neon-green); white-space: pre;">${BANNER}</pre>`;    print(bannerHTML, "var(--neon-green)", true);
     print("Welcome back, dh4bi.", "var(--text-secondary)");
     print("Type 'help' to see available commands.");
 }
