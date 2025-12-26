@@ -922,15 +922,22 @@ scripting=[Python, PowerShell, Bash]`,
 };
 
 // Advanced Boot Sequence
+// Replace the bootLines array and bootSequence function in your <script>
 const bootLines = [
     { text: "Initializing DH4BI Kernel 1.2.25...", color: "var(--text-secondary)" },
     { text: "[ OK ] Loading secure_module...", color: "var(--neon-green)" },
-    { text: "[ OK ] Mounting /dev/sda1 on /home/dh4bi...", color: "var(--neon-green)" },
-    { text: "[WARN] Detecting intrusion prevention systems...", color: "orange" },
-    { text: "[ OK ] IPS bypassed successfully.", color: "var(--neon-green)" },
-    { text: "Starting Terminal UI...", color: "var(--text-secondary)" },
-    { text: "Access Granted.", color: "var(--neon-red)" }
+    { text: "$ cat /etc/operator.conf", color: "var(--text-secondary)" },
+    { text: 'DESIGNATION="Cybersecurity Engineer"', color: "var(--neon-green)" },
+    { text: 'SPECIALTY="Penetration Testing, Offensive Security"', color: "var(--neon-green)" },
+    { text: "$ systemctl status --all", color: "var(--text-secondary)" },
+    { text: "[+] Offensive capabilities: READY", color: "var(--neon-green)" },
+    { text: "[+] Defense protocols: ACTIVE", color: "var(--neon-green)" },
+    { text: "[+] Intel gathering: OPERATIONAL", color: "var(--neon-green)" },
+    { text: " ", color: "var(--neon-green)" },
+    { text: "SYSTEMS NOMINAL", color: "var(--glitch-white)" },
+    { text: "Starting Terminal UI...", color: "var(--text-secondary)" }
 ];
+
 
 async function print(text, color = "var(--neon-green)", isHtml = false) {
   const line = document.createElement("div");
@@ -950,16 +957,15 @@ async function print(text, color = "var(--neon-green)", isHtml = false) {
 }
 
 async function bootSequence() {
-    // Clear initial output
     output.innerHTML = "";
     
-    // Play boot lines
     for (const line of bootLines) {
-        await new Promise(r => setTimeout(r, 150 + Math.random() * 300));
+        // Shorter delay for a "fast" terminal feel
+        await new Promise(r => setTimeout(r, 100 + Math.random() * 200));
         print(line.text, line.color);
     }
     
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise(r => setTimeout(r, 500));
     
     const bannerHTML = `<pre style="font-size: clamp(5px, 1.4vw, 14px); line-height: 1.1; color: var(--neon-green); margin-bottom: 1rem;">
 ${BANNER}
