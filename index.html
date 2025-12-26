@@ -36,102 +36,84 @@
             padding: 2rem;
         }
 
-        /* Sharper Glitch Effect - Only for Title and Footer */
-        .glitch-title, .glitch-footer {
-            position: relative;
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: var(--neon-green);
-            text-shadow: 0 0 10px var(--neon-green);
-            display: inline-block;
-        }
-
-        .glitch-footer {
-            font-size: 1.5rem;
-        }
-
-        .glitch-title::before,
-        .glitch-title::after,
-        .glitch-footer::before,
-        .glitch-footer::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
+/* Updated Glitch Animation - 8s Loop */
         .glitch-title::before,
         .glitch-footer::before {
             left: 3px;
             text-shadow: -3px 0 var(--glitch-pink);
-            animation: glitch-slice-1 0.5s infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            /* 8s duration, infinite loop */
+            animation: glitch-slice-1 8s infinite; 
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
 
         .glitch-title::after,
         .glitch-footer::after {
             left: -3px;
             text-shadow: 3px 0 var(--glitch-cyan);
-            animation: glitch-slice-2 0.5s infinite;
-            clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+            animation: glitch-slice-2 8s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
 
+        /* Keyframes Logic: 
+           0% to 90% = Static (No glitch)
+           91% to 100% = Glitch Active 
+        */
         @keyframes glitch-slice-1 {
-            0%, 100% {
+            0%, 90% {
                 transform: translate(0);
-                clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                opacity: 1; 
             }
-            10% {
+            92% {
                 transform: translate(-5px, -5px);
                 clip-path: polygon(0 10%, 100% 10%, 100% 55%, 0 55%);
             }
-            20% {
+            94% {
                 transform: translate(5px, 5px);
                 clip-path: polygon(0 20%, 100% 20%, 100% 65%, 0 65%);
             }
-            30% {
+            96% {
                 transform: translate(-5px, 5px);
                 clip-path: polygon(0 5%, 100% 5%, 100% 35%, 0 35%);
             }
-            40% {
+            98% {
                 transform: translate(5px, -5px);
                 clip-path: polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
             }
-            50% {
-                transform: translate(-3px, 3px);
-                clip-path: polygon(0 25%, 100% 25%, 100% 70%, 0 70%);
+            100% {
+                transform: translate(0);
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
         }
 
         @keyframes glitch-slice-2 {
-            0%, 100% {
+            0%, 90% {
                 transform: translate(0);
-                clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                opacity: 1;
             }
-            15% {
+            92% {
                 transform: translate(5px, -5px);
                 clip-path: polygon(0 60%, 100% 60%, 100% 95%, 0 95%);
             }
-            25% {
+            94% {
                 transform: translate(-5px, 5px);
                 clip-path: polygon(0 55%, 100% 55%, 100% 85%, 0 85%);
             }
-            35% {
+            96% {
                 transform: translate(5px, 5px);
                 clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%);
             }
-            45% {
+            98% {
                 transform: translate(-5px, -5px);
                 clip-path: polygon(0 50%, 100% 50%, 100% 80%, 0 80%);
             }
-            55% {
-                transform: translate(3px, -3px);
-                clip-path: polygon(0 65%, 100% 65%, 100% 90%, 0 90%);
+            100% {
+                transform: translate(0);
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
             }
         }
-
+        
         /* Header */
         header {
             text-align: center;
@@ -851,50 +833,100 @@ const BANNER = `
 ╚═════╝ ╚═╝  ╚═╝     ╚═╝╚═════╝ ╚═╝`;
 
 let cwd = "~";
+
+// File System - Matching your HTML content
 const fs = {
   "~": {
-    "about.txt": "Cybersecurity Engineer focused on Offensive Security.",
+    "welcome.txt": "Welcome to DH4BI's domain. Type 'help' for available commands.",
+    
+    "certifications.txt": `
+[+] OFFENSIVE SECURITY
+    - OSCP+/OSCP (Active Directory, Network Pentesting, Web App Security, Exploit Development, PrivEsc)
+    
+[+] TCM SECURITY
+    - PNPT (Active Directory, Network Pentesting, Web App Security, OWASP Top 10)
+    - PJPT (Active Directory, Network Pentesting)
+
+[+] COMPTIA
+    - CASP+, Security+, Network+, A+`,
+    
+    "skills.conf": `
+# Penetration Testing
+network_pentest=true
+active_directory=true
+AV_evasion=true
+web_app_security=true
+exploit_dev=true
+
+# Active Directory
+kerberoasting=true
+pass_the_hash=true
+bloodhound_analysis=true
+AS-REP_roasting=true
+
+# Tools
+frameworks=[Metasploit, C2]
+tools=[Kali, nxc, Nmap, ligolo, rustscan, feroxbuster, ...]
+scripting=[Python, PowerShell, Bash]`,
+    
+    "contact.txt": `
+---------------------------------------------------------
+| GitHub   | https://github.com/ericktafel1             |
+| LinkedIn | https://www.linkedin.com/in/ericktafel     |
+| HTB      | https://app.hackthebox.com/profile/1321737 |
+| Email    | tafel_sec@protonmail.com                   |
+---------------------------------------------------------`,
+    
     "projects": {
-      "ctf_notes.txt": "Check my GitHub for HTB writeups.",
-      ".hidden": {
-        "ship_or_jet.txt": "MD5: 253dd04e87492e4fc3471de5e776bc3d" // MD5 for ship or jet
-      }
+      "ctf_notes": "Detailed writeups for HTB & TryHackMe. Check GitHub.",
+      "azure_honeypot": "Deployed Azure Sentinel honeypot to map live attack vectors.",
+      "rpi_security": "Hardware security projects using Raspberry Pi.",
+      "auto_scripts.py": "Python & Bash automation for reconnaissance."
     }
   }
 };
 
-// Simulation of the p3ta00 boot sequence
+// Advanced Boot Sequence
 const bootLines = [
-    "Initializing DH4BI Kernel 1.2.25...",
-    "Loading secure_module... [ OK ]",
-    "Mounting /dev/sda1 on /home/dh4bi... [ OK ]",
-    "Detecting intrusion prevention systems... [ NONE ]",
-    "Starting Terminal UI...",
-    "Welcome, User. System is ready."
+    { text: "Initializing DH4BI Kernel 1.2.25...", color: "var(--text-secondary)" },
+    { text: "[ OK ] Loading secure_module...", color: "var(--neon-green)" },
+    { text: "[ OK ] Mounting /dev/sda1 on /home/dh4bi...", color: "var(--neon-green)" },
+    { text: "[WARN] Detecting intrusion prevention systems...", color: "orange" },
+    { text: "[ OK ] IPS bypassed successfully.", color: "var(--neon-green)" },
+    { text: "Starting Terminal UI...", color: "var(--text-secondary)" },
+    { text: "Access Granted.", color: "var(--neon-green)" }
 ];
 
 async function print(text, color = "var(--neon-green)", isHtml = false) {
   const line = document.createElement("div");
   line.className = "terminal-line";
   line.style.color = color;
+  
   if (isHtml) {
     line.innerHTML = text;
   } else {
+    // preserve formatting for the ASCII tables in cat commands
+    line.style.whiteSpace = "pre-wrap"; 
     line.textContent = text;
   }
+  
   output.appendChild(line);
   output.scrollTop = output.scrollHeight;
 }
 
 async function bootSequence() {
+    // Clear initial output
+    output.innerHTML = "";
+    
+    // Play boot lines
     for (const line of bootLines) {
-        await new Promise(r => setTimeout(r, 100));
-        print("[*] " + line);
+        await new Promise(r => setTimeout(r, 150 + Math.random() * 300));
+        print(line.text, line.color);
     }
     
-    // The banner is injected as HTML to preserve the <pre> formatting
-    const bannerHTML = `
-<pre style="font-size: clamp(5px, 1.4vw, 14px); line-height: 1.1; color: var(--neon-green); pointer-events: none;">
+    await new Promise(r => setTimeout(r, 400));
+    
+    const bannerHTML = `<pre style="font-size: clamp(5px, 1.4vw, 14px); line-height: 1.1; color: var(--neon-green); margin-bottom: 1rem;">
 ${BANNER}
 </pre>`;
     print(bannerHTML, "var(--neon-green)", true);
@@ -905,71 +937,86 @@ ${BANNER}
 function runCommand(cmd) {
   const args = cmd.trim().split(/\s+/);
   const command = args[0].toLowerCase();
-  const flags = args.filter(arg => arg.startsWith("-"));
-  const pathArg = args.filter(arg => !arg.startsWith("-") && arg !== command)[0];
+  
+  // Basic path handling (only supports 1 level deep for this demo)
+  const pathArg = args[1];
 
   switch (command) {
+    case "whoami":
+       print("Erick Tafel - Cybersecurity Engineer | Red Team | Offensive Security");
+       break;
+
     case "ls":
-      // Determine which directory object to look at based on current working directory
-      let currentDirObj = (cwd === "~") ? fs["~"] : fs["~"]["projects"];
-      
-      // If we are deeper in .hidden
-      if (cwd.includes(".hidden")) currentDirObj = fs["~"]["projects"][".hidden"];
-
-      const allFiles = Object.keys(currentDirObj);
-      const isShowAll = flags.some(f => f.includes("a"));
-
-      if (isShowAll) {
-        // Show everything including hidden
-        print(".    ..    " + allFiles.join("    "));
-      } else {
-        // Filter out files starting with "."
-        const visible = allFiles.filter(f => !f.startsWith("."));
-        print(visible.join("    "));
+      // Check current directory
+      let dirContent;
+      if (cwd === "~") {
+          dirContent = Object.keys(fs["~"]);
+      } else if (cwd === "~/projects") {
+          dirContent = Object.keys(fs["~"]["projects"]);
       }
+      
+      // Filter out hidden files unless -a is used (simplified)
+      const visibleFiles = dirContent.join("    ");
+      print(visibleFiles);
       break;
 
     case "cd":
-      const dest = pathArg;
-      if (!dest || dest === "~") {
+      if (!pathArg || pathArg === "~") {
         cwd = "~";
-      } else if (dest === "..") {
-        if (cwd === "~/projects/.hidden") cwd = "~/projects";
-        else cwd = "~";
-      } else if (dest === "projects" && cwd === "~") {
+      } else if (pathArg === "projects" && cwd === "~") {
         cwd = "~/projects";
-      } else if (dest === ".hidden" && cwd === "~/projects") {
-        cwd = "~/projects/.hidden";
+      } else if (pathArg === ".." && cwd !== "~") {
+        cwd = "~";
       } else {
-        print(`bash: cd: ${dest}: No such directory`);
+        print(`bash: cd: ${pathArg}: No such file or directory`);
       }
       break;
 
     case "cat":
-      let fileObj;
-      if (cwd === "~") fileObj = fs["~"][pathArg];
-      else if (cwd === "~/projects") fileObj = fs["~"]["projects"][pathArg];
-      else if (cwd === "~/projects/.hidden") fileObj = fs["~"]["projects"][".hidden"][pathArg];
+      if (!pathArg) {
+          print("Usage: cat [filename]");
+          return;
+      }
+      
+      let content;
+      // Resolve file based on CWD
+      if (cwd === "~") {
+          if (fs["~"][pathArg]) content = fs["~"][pathArg];
+          // Allow cat projects/file.txt from root
+          else if (pathArg.startsWith("projects/") && fs["~"]["projects"][pathArg.split("/")[1]]) {
+              content = fs["~"]["projects"][pathArg.split("/")[1]];
+          }
+      } else if (cwd === "~/projects") {
+          if (fs["~"]["projects"][pathArg]) content = fs["~"]["projects"][pathArg];
+      }
 
-      if (fileObj && typeof fileObj === "string") {
-        print(fileObj);
-      } else if (fileObj && typeof fileObj === "object") {
+      if (typeof content === "string") {
+        print(content);
+      } else if (typeof content === "object") {
         print(`cat: ${pathArg}: Is a directory`);
       } else {
-        print(`cat: ${pathArg}: No such file`);
+        print(`cat: ${pathArg}: No such file or directory`);
       }
       break;
 
     case "help":
-      print("Commands: ls [-a], cd [dir], cat [file], clear, whoami");
+      print("Available commands:");
+      print("  whoami    - Display current user identity");
+      print("  ls        - List directory contents");
+      print("  cd [dir]  - Change directory");
+      print("  cat [file]- Display file contents");
+      print("  clear     - Clear terminal screen");
       break;
 
     case "clear":
       output.innerHTML = "";
       break;
 
+    case "":
+      break;
+
     default:
-      print(`command not found: ${command}`);
+      print(`bash: ${command}: command not found`);
   }
 }
 
@@ -982,5 +1029,6 @@ input.addEventListener("keydown", e => {
   }
 });
 
+// Start the boot sequence on load
 window.onload = bootSequence;
 </script>
