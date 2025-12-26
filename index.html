@@ -6,6 +6,39 @@
     <title>Erick Tafel | Cybersecurity Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .top-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid var(--neon-green);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--neon-green);
+    text-shadow: 0 0 10px var(--neon-green);
+}
+
+@media (max-width: 768px) {
+    .top-nav { padding: 0.5rem; width: 100%; justify-content: center; }
+    .nav-links { gap: 0.8rem; font-size: 0.7rem; }
+}
         * {
             margin: 0;
             padding: 0;
@@ -573,6 +606,15 @@ footer {
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+    <div class="nav-links">
+        <a href="#about"><i class="fas fa-user"></i> whoami</a>
+        <a href="#certifications"><i class="fas fa-certificate"></i> Certs</a>
+        <a href="#skills"><i class="fas fa-tools"></i> Skills</a>
+        <a href="#projects"><i class="fas fa-code-branch"></i> Projects</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+    </div>
+</nav>
     <header>
         <h1 class="glitch-title" data-text="Erick Tafel">Erick Tafel</h1>
         <p class="alias">Q2jDoG8gYuG6oW4h</p>
@@ -906,11 +948,32 @@ scripting=[Python, PowerShell, Bash]`,
 | Email    | tafel_sec@protonmail.com                   |
 ---------------------------------------------------------`,
     
+"usr": {
+        "bin": {
+            "nmap": "...no",
+            "metasploit": "...absolutely not"
+        },
+        "share": {
+            "wordlists": {
+                "rockyou.txt": "10 million passwords... Please wait..."
+            }
+        }
+    },
     "projects": {
       "ctf_notes": "Detailed writeups for HTB & TryHackMe. Check GitHub.",
       "azure_honeypot": "Deployed Azure Sentinel honeypot to map live attack vectors.",
       "rpi_security": "Hardware security projects using Raspberry Pi.",
-      "auto_scripts.py": "Python & Bash automation for reconnaissance."
+      "auto_scripts.py": "Python & Bash automation for reconnaissance.",
+      // The Secret Tunnel
+      ".ssh_tunnel": {
+            "BackupFiles": {
+                "ArchivedPasswords": {
+                    "Hashes": {
+                        ".README.txt": "DH4BI{Im_In}"
+                    }
+                }
+            }
+        }
     }
   }
 };
@@ -978,34 +1041,37 @@ function runCommand(cmd) {
        break;
 
     case "ls":
-      const showHidden = args.includes("-a"); // Check for the -a flag
-      let dirContent;
-      
-      if (cwd === "~") {
-          dirContent = Object.keys(fs["~"]);
-      } else if (cwd === "~/projects") {
-          dirContent = Object.keys(fs["~"]["projects"]);
-      }
-      
-      // Filter logic: only show files starting with "." if showHidden is true
-      const filteredFiles = dirContent.filter(file => showHidden || !file.startsWith("."));
-      
-      if (filteredFiles.length > 0) {
-          print(filteredFiles.join("    "));
-      }
-      break;
+    let currentDir = fs["~"];
+    const pathParts = cwd.split('/').slice(1); // skip ~
+    pathParts.forEach(part => { if(part) currentDir = currentDir[part]; });
+    
+    const showHidden = args.includes("-a");
+    const files = Object.keys(currentDir).filter(f => showHidden || !f.startsWith("."));
+    print(files.join("    "));
+    break;
 
-    case "cd":
-      if (!pathArg || pathArg === "~") {
+case "cd":
+    if (!pathArg || pathArg === "~") {
         cwd = "~";
-      } else if (pathArg === "projects" && cwd === "~") {
-        cwd = "~/projects";
-      } else if (pathArg === ".." && cwd !== "~") {
-        cwd = "~";
-      } else {
-        print(`bash: cd: ${pathArg}: No such file or directory`);
-      }
-      break;
+    } else if (pathArg === "..") {
+        if (cwd !== "~") {
+            const parts = cwd.split("/");
+            parts.pop();
+            cwd = parts.join("/");
+        }
+    } else {
+        // Find if directory exists in current location
+        let targetDir = fs["~"];
+        const currentParts = cwd.split('/').slice(1);
+        currentParts.forEach(part => { if(part) targetDir = targetDir[part]; });
+
+        if (targetDir[pathArg] && typeof targetDir[pathArg] === "object") {
+            cwd = cwd === "~" ? `~/${pathArg}` : `${cwd}/${pathArg}`;
+        } else {
+            print(`bash: cd: ${pathArg}: No such directory`);
+        }
+    }
+    break;
 
     case "cat":
       if (!pathArg) {
