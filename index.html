@@ -283,12 +283,14 @@
 .terminal-btn:nth-child(1) { background: #ff5f56; } /* Red */
 .terminal-btn:nth-child(2) { background: #ffbd2e; } /* Yellow */
 .terminal-btn:nth-child(3) { background: #27c93f; } /* Green */
-
+<div id="output" class="terminal-output"></div>
+/* Ensure the input starts immediately after the prompt */
 .terminal-input {
-    display: flex; /* This aligns the prompt and input side-by-side */
+    display: flex; 
     align-items: center;
     width: 100%;
     margin-top: 10px;
+    background: transparent;
 }
 
 #terminal-command {
@@ -297,8 +299,8 @@
     color: var(--neon-green);
     font-family: 'Courier New', monospace;
     outline: none;
-    flex: 1; /* This ensures the input takes up the remaining space */
-    margin-left: 8px;
+    flex: 1; /* This takes up only the space AFTER the prompt */
+    margin-left: 8px; /* Small gap after the '$' */
     font-size: 0.95rem;
 }
         .cursor {
@@ -915,20 +917,20 @@ scripting=[Python, PowerShell, Bash]`,
 // Replace the bootLines array and bootSequence function in your <script>
 const bootLines = [
     { text: "Initializing DH4BI Kernel 1.2.25...", color: "var(--text-secondary)" },
-    { text: "[ OK ] Loading secure_module...", color: "var(--neon-white)" },
+    { text: "[ OK ] Loading secure_module...", color: "var(--glitch-white)" },
     { text: "[ OK ] Mounting /dev/sda1 on /home/dh4bi...", color: "var(--neon-green)" },
     { text: "[WARN] Detecting intrusion prevention systems...", color: "orange" },
     { text: "[ OK ] IPS bypassed successfully.", color: "var(--neon-green)" },
     { text: "SYSTEMS NOMINAL", color: "var(--glitch-white)" },
     { text: "Starting Terminal UI...", color: "var(--text-secondary)" },
-    { text: "Access Granted.", color: "var(--neon-green)" }
+    { text: "Access Granted.", color: "var(--neon-green)" }, // Added missing comma here
     { text: "dh4bi@portfolio:~$ cat /etc/operator.conf", color: "var(--neon-green)" },
-    { text: 'DESIGNATION="Cybersecurity Engineer"', color: "var(--neon-white)" },
-    { text: 'SPECIALTY="Penetration Testing, Offensive Security"', color: "var(--neon-white)" },
-    { text: "dh4bi@portfolio:~$ systemctl status --all", color: "var(--neon-white)" },
-    { text: "[+] Offensive capabilities: READY", color: "var(--neon-white)" },
-    { text: "[+] Defense protocols: ACTIVE", color: "var(--neon-white)" },
-    { text: "[+] Intel gathering: OPERATIONAL", color: "var(--neon-white)" },
+    { text: 'DESIGNATION="Cybersecurity Engineer"', color: "var(--glitch-white)" },
+    { text: 'SPECIALTY="Penetration Testing, Offensive Security"', color: "var(--glitch-white)" },
+    { text: "dh4bi@portfolio:~$ systemctl status --all", color: "var(--glitch-white)" },
+    { text: "[+] Offensive capabilities: READY", color: "var(--neon-green)" },
+    { text: "[+] Defense protocols: ACTIVE", color: "var(--neon-green)" },
+    { text: "[+] Intel gathering: OPERATIONAL", color: "var(--neon-green)" },
     { text: " ", color: "var(--neon-green)" }
 ];
 
