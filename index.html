@@ -593,19 +593,21 @@ footer {
 
     <div class="container">
         <!-- Interactive Terminal -->
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-btn"></div>
-                <div class="terminal-btn"></div>
-                <div class="terminal-btn"></div>
-                </span>
-            </div>
-            <div class="terminal-input">
-                <span class="prompt">dh4bi@portfolio:~$</span>
-                <input type="text" id="terminal-command" placeholder="Type a command..." autocomplete="off">
-                <span class="cursor"></span>
-            </div>
-        </div>
+<div class="terminal">
+    <div class="terminal-header">
+        <div class="terminal-btn"></div>
+        <div class="terminal-btn"></div>
+        <div class="terminal-btn"></div>
+    </div>
+    
+    <div id="output" class="terminal-output"></div>
+    
+    <div class="terminal-input">
+        <span class="prompt">dh4bi@portfolio:~$</span>
+        <input type="text" id="terminal-command" placeholder="Type a command..." autocomplete="off">
+        <span class="cursor"></span>
+    </div>
+</div>
         <div class="status-bar">
             <div class="status-ticker">
                 <div class="status-ticker-item">
@@ -923,7 +925,7 @@ const bootLines = [
     { text: "[ OK ] IPS bypassed successfully.", color: "var(--neon-green)" },
     { text: "SYSTEMS NOMINAL", color: "var(--glitch-white)" },
     { text: "Starting Terminal UI...", color: "var(--text-secondary)" },
-    { text: "Access Granted.", color: "var(--neon-green)" }, // Added missing comma here
+    { text: "Access Granted.", color: "var(--neon-green)" }, // FIXED: Added missing comma
     { text: "dh4bi@portfolio:~$ cat /etc/operator.conf", color: "var(--neon-green)" },
     { text: 'DESIGNATION="Cybersecurity Engineer"', color: "var(--glitch-white)" },
     { text: 'SPECIALTY="Penetration Testing, Offensive Security"', color: "var(--glitch-white)" },
