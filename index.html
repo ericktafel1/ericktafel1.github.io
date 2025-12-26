@@ -336,15 +336,24 @@ header {
     flex: 1; /* This forces the input to start exactly after the '$' */
     margin-left: 8px;
     font-size: 0.95rem;
-    caret-shape: block; /* Turns the blinking line into a blinking block */
-    caret-color: var(--neon-green) !important; /* Forces the line to show up */
+    caret-color: transparent; 
 }
 
+/* The Custom Blinking Block */
+.custom-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2rem;
+    background: var(--neon-green);
+    margin-left: 2px;
+    animation: cursor-blink 1s step-end infinite;
+    vertical-align: middle;
+}
 
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
+@keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
 
         /* Sections */
         section {
