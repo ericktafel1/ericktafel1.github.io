@@ -336,15 +336,9 @@ header {
     flex: 1; /* This forces the input to start exactly after the '$' */
     margin-left: 8px;
     font-size: 0.95rem;
+    caret-shape: block; /* Turns the blinking line into a blinking block */
 }
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 16px;
-            background: var(--neon-green);
-            animation: blink 1s infinite;
-            margin-left: -5px; /* Pulls cursor close to the typed text */
-}
+
 
         @keyframes blink {
             0%, 50% { opacity: 1; }
