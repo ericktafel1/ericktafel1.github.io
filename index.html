@@ -36,100 +36,109 @@
             padding: 2rem;
         }
 
-/* Updated Glitch Animation - 8s Loop */
-        .glitch-title::before,
-        .glitch-footer::before {
-            left: 3px;
-            text-shadow: -3px 0 var(--glitch-orange);
-            /* 8s duration, infinite loop */
-            animation: glitch-slice-1 8s infinite; 
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        /* Glitch Effect - Only glitches at 7-8 second mark */
+        .glitch-title {
+            position: relative;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+            display: inline-block;
+            animation: glitch-main 8s infinite;
         }
 
-        .glitch-title::after,
-        .glitch-footer::after {
+        .glitch-title::before,
+        .glitch-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .glitch-title::before {
+            left: 3px;
+            text-shadow: -3px 0 var(--glitch-orange);
+            animation: glitch-slice-1 8s infinite;
+        }
+
+        .glitch-title::after {
             left: -3px;
             text-shadow: 3px 0 var(--glitch-white);
             animation: glitch-slice-2 8s infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
-.glitch-title {
-    animation: glitch-loop 8s infinite;
-    color: var(--neon-green);
-    position: relative;
-}
 
-@keyframes glitch-loop {
-    /* 0s to 2s: Active Glitch (0% to 25% of 8s) */
-    0%, 25%, 100% { transform: none; text-shadow: none; color: var(--neon-green); }
-    5% { 
-        transform: translate(-2px, 2px); 
-        text-shadow: 2px 0 var(--glitch-white), -2px 0 var(--glitch-orange); 
-    }
-    10% { 
-        transform: translate(2px, -2px); 
-        text-shadow: -2px 0 var(--glitch-white), 2px 0 var(--glitch-green); 
-    }
-    15% { 
-        transform: translate(-1px, 1px); 
-        color: var(--glitch-white);
-    }
-    20% { 
-        transform: translate(1px, -1px); 
-        text-shadow: 2px 0 var(--glitch-orange); 
-    }
-    /* 2s to 8s: Normal Text (25% to 100% of 8s) */
-    26%, 99% { 
-        transform: none; 
-        text-shadow: none; 
-        color: var(--neon-green); 
-    }
-}
-        /* Keyframes Logic: 
-           0% to 90% = Static (No glitch)
-           91% to 100% = Glitch Active 
-        */
-@keyframes glitch-slice-1 {
-    /* 0s to 1.6s (20% of 8s): Active Glitch */
-    0%, 20% { transform: translate(0); clip-path: inset(0 0 0 0); }
-    2% { transform: translate(-3px, 2px); text-shadow: 2px 0 #fff; }
-    4% { transform: translate(3px, -2px); text-shadow: -2px 0 #ff8c00; } /* Orange */
-    6% { transform: translate(-1px, 3px); text-shadow: 2px 0 var(--neon-green); }
-    8% { transform: translate(2px, 1px); clip-path: inset(10% 0 40% 0); }
-    10% { transform: translate(0); }
-    /* 1.6s to 8s (21% to 100%): Normal Green Text */
-    21%, 100% { transform: translate(0); text-shadow: none; }
-}
-
-/* Apply similar logic to glitch-slice-2 with slightly different offsets */
-        @keyframes glitch-slice-2 {
-            0%, 90% {
+        @keyframes glitch-main {
+            0%, 87.5%, 100% {
                 transform: translate(0);
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-                opacity: 1;
+            }
+            88% {
+                transform: translate(-3px, 3px);
+            }
+            89% {
+                transform: translate(3px, -3px);
+            }
+            90% {
+                transform: translate(-3px, 3px);
+            }
+            91% {
+                transform: translate(3px, -3px);
             }
             92% {
+                transform: translate(0);
+            }
+        }
+
+        @keyframes glitch-slice-1 {
+            0%, 87.5%, 100% {
+                opacity: 0;
+                transform: translate(0);
+            }
+            88%, 92% {
+                opacity: 1;
+                transform: translate(-5px, -5px);
+                clip-path: polygon(0 10%, 100% 10%, 100% 55%, 0 55%);
+            }
+            89% {
+                transform: translate(5px, 5px);
+                clip-path: polygon(0 20%, 100% 20%, 100% 65%, 0 65%);
+            }
+            90% {
+                transform: translate(-5px, 5px);
+                clip-path: polygon(0 5%, 100% 5%, 100% 35%, 0 35%);
+            }
+            91% {
+                transform: translate(5px, -5px);
+                clip-path: polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
+            }
+        }
+
+        @keyframes glitch-slice-2 {
+            0%, 87.5%, 100% {
+                opacity: 0;
+                transform: translate(0);
+            }
+            88%, 92% {
+                opacity: 1;
                 transform: translate(5px, -5px);
                 clip-path: polygon(0 60%, 100% 60%, 100% 95%, 0 95%);
             }
-            94% {
+            89% {
                 transform: translate(-5px, 5px);
                 clip-path: polygon(0 55%, 100% 55%, 100% 85%, 0 85%);
             }
-            96% {
+            90% {
                 transform: translate(5px, 5px);
                 clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%);
             }
-            98% {
+            91% {
                 transform: translate(-5px, -5px);
                 clip-path: polygon(0 50%, 100% 50%, 100% 80%, 0 80%);
             }
-            100% {
-                transform: translate(0);
-                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            }
         }
-        
+
         /* Header */
         header {
             text-align: center;
@@ -137,7 +146,6 @@
             background: linear-gradient(135deg, var(--dark-bg) 0%, #0a0a0a 100%);
             border-bottom: 3px solid var(--neon-green);
             margin-bottom: 3rem;
-            position: relative;
         }
 
         .alias {
@@ -146,7 +154,6 @@
             opacity: 0.7;
             margin-bottom: 0.5rem;
             letter-spacing: 2px;
-            font-family: monospace;
         }
 
         .subtitle {
@@ -156,37 +163,13 @@
             font-weight: 300;
         }
 
-        .roles {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-
-        .role-tag {
-            padding: 0.6rem 1.2rem;
-            background: rgba(0, 255, 65, 0.05);
-            border: 2px solid var(--neon-green);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .role-tag:hover {
-            background: rgba(0, 255, 65, 0.15);
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
-        }
-
-        /* Status Indicators */
-        /* Status Bar - Side Scrolling Ticker */
+        /* Status Bar - Side Scrolling */
         .status-bar {
             background: rgba(0, 255, 65, 0.05);
             border-top: 1px solid var(--neon-green);
             border-bottom: 1px solid var(--neon-green);
             overflow: hidden;
             padding: 0.8rem 0;
-            position: relative;
             margin-top: 2rem;
         }
 
@@ -206,12 +189,8 @@
         }
 
         @keyframes scroll-left {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         .status-dot {
@@ -232,72 +211,66 @@
             background: #000;
             border: 2px solid var(--neon-green);
             border-radius: 8px;
-            padding: 1rem;
+            padding: 0;
             margin: 2rem 0;
             box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
-            width: 100%;
             min-height: 500px;
         }
 
-.terminal-header {
-    display: flex;
-    gap: 8px; /* Standard spacing for buttons */
-    padding: 10px;
-    background: #1a1a1a;
-    border-bottom: 1px solid #333;
-}
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-bottom: 1px solid #333;
+            border-radius: 8px 8px 0 0;
+        }
 
-.terminal-btn {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-btn:nth-child(1) { background: #ff5f56; }
+        .terminal-btn:nth-child(2) { background: #ffbd2e; }
+        .terminal-btn:nth-child(3) { background: #27c93f; }
 
         .terminal-output {
             color: var(--neon-green);
-            font-size: 0.95rem; /* Slightly larger text */
+            font-size: 0.95rem;
             min-height: 450px;
             max-height: 600px;
             overflow-y: auto;
+            padding: 1rem;
             font-family: 'Courier New', monospace;
         }
 
         .terminal-line {
             margin: 0.5rem 0;
-        }
-
-        .terminal-line a {
-            color: var(--glitch-cyan);
-            text-decoration: underline;
-        }
-
-        .terminal-line a:hover {
-            color: var(--neon-green);
+            white-space: pre-wrap;
         }
 
         .prompt {
             color: var(--neon-green);
         }
-/* Specific colors for terminal buttons */
-.terminal-btn:nth-child(1) { background: #ff5f56; } /* Red */
-.terminal-btn:nth-child(2) { background: #ffbd2e; } /* Yellow */
-.terminal-btn:nth-child(3) { background: #27c93f; } /* Green */
 
-.terminal-input {
-    display: flex;
-    align-items: center;
-}
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            padding: 0 1rem 1rem 1rem;
+        }
 
-#terminal-command {
-    background: transparent;
-    border: none;
-    color: var(--neon-green);
-    font-family: 'Courier New', monospace;
-    outline: none;
-    width: auto;
-    flex: 0 1 auto; /* Prevents stretching to the far right */
-    margin-left: 5px;
-}
+        #terminal-command {
+            background: transparent;
+            border: none;
+            color: var(--neon-green);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            outline: none;
+            flex: 1;
+            margin-left: 5px;
+        }
 
         .cursor {
             display: inline-block;
@@ -305,6 +278,7 @@
             height: 16px;
             background: var(--neon-green);
             animation: blink 1s infinite;
+            margin-left: 2px;
         }
 
         @keyframes blink {
@@ -323,13 +297,6 @@
             margin-bottom: 2rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--neon-green);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        h2 i {
-            font-size: 1.5rem;
         }
 
         /* Cards */
@@ -346,19 +313,6 @@
             border-radius: 8px;
             border: 1px solid rgba(0, 255, 65, 0.2);
             transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
         }
 
         .card:hover {
@@ -367,20 +321,9 @@
             transform: translateY(-5px);
         }
 
-        .card:hover::before {
-            opacity: 1;
-        }
-
         .card h3 {
             color: var(--neon-green);
             margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .card h3 i {
-            font-size: 1.2rem;
         }
 
         .card-meta {
@@ -439,14 +382,6 @@
         .skill-category h3 {
             color: var(--neon-green);
             margin-bottom: 1rem;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .skill-category h3 i {
-            font-size: 1.2rem;
         }
 
         .skill-category ul {
@@ -456,17 +391,11 @@
         .skill-category li {
             padding: 0.4rem 0;
             color: var(--text-secondary);
-            transition: color 0.3s ease;
-        }
-
-        .skill-category li:hover {
-            color: var(--text-primary);
         }
 
         .skill-category li:before {
             content: "▹ ";
             color: var(--neon-green);
-            font-weight: bold;
         }
 
         /* Contact Links */
@@ -503,12 +432,16 @@
             padding: 3rem 2rem;
             margin-top: 5rem;
             border-top: 2px solid var(--neon-green);
-            background: linear-gradient(180deg, var(--dark-bg) 0%, #0a0a0a 100%);
         }
 
-        footer p {
-            margin: 1rem 0;
-            color: var(--text-secondary);
+        .footer-prompt {
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            margin-top: 1rem;
         }
 
         /* Responsive */
@@ -516,79 +449,25 @@
             .glitch-title {
                 font-size: 2rem;
             }
-
-            .glitch-footer {
-                font-size: 1.2rem;
-            }
             .cards {
                 grid-template-columns: 1fr;
             }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            .status-bar {
-                gap: 1rem;
-            }
-
-            .status-item {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .contact-links {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .contact-link {
-                width: 100%;
-                justify-content: center;
-            }
-
             .terminal-output {
                 font-size: 0.8rem;
             }
-
-            .encrypted-badge {
-                font-size: 0.75rem;
-                padding: 0.3rem 0.8rem;
-            }
         }
-
-
-        html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.container {
-    flex: 1; /* This pushes the footer down by taking up all available space */
-}
-
-footer {
-    padding-bottom: 2rem;
-}
     </style>
 </head>
 <body>
     <header>
-        <p class="alias">Q2jDoG8gYW5oIGhhIQ==</p>
+        <p class="alias">QUxJQVMgPSBESDRCSQ==</p>
         <h1 class="glitch-title" data-text="Erick Tafel">Erick Tafel</h1>
         <p class="subtitle">Cybersecurity Engineer</p>
         <div class="status-bar">
             <div class="status-ticker">
                 <div class="status-ticker-item">
                     <span class="status-dot"></span>
-                    <span> SYSTEMS ONLINE</span>
+                    <span><i class="fas fa-server"></i> SYSTEMS ONLINE</span>
                 </div>
                 <div class="status-ticker-item">
                     <span><i class="fas fa-shield-virus"></i> ENCRYPTION: ACTIVE</span>
@@ -605,10 +484,10 @@ footer {
                 <div class="status-ticker-item">
                     <span><i class="fas fa-crosshairs"></i> SECTOR: CYBER OPS</span>
                 </div>
-                <!-- Duplicate for seamless loop -->
+                <!-- Duplicate for loop -->
                 <div class="status-ticker-item">
                     <span class="status-dot"></span>
-                    <span>SYSTEMS ONLINE</span>
+                    <span><i class="fas fa-server"></i> SYSTEMS ONLINE</span>
                 </div>
                 <div class="status-ticker-item">
                     <span><i class="fas fa-shield-virus"></i> ENCRYPTION: ACTIVE</span>
@@ -630,41 +509,30 @@ footer {
     </header>
 
     <div class="container">
-        <!-- Interactive Terminal -->
+        <!-- Terminal -->
         <div class="terminal">
             <div class="terminal-header">
                 <div class="terminal-btn"></div>
                 <div class="terminal-btn"></div>
                 <div class="terminal-btn"></div>
-                </span>
             </div>
-            <div class="terminal-output" id="output">
-                <div class="terminal-line">
-
-                </div>
-                <div class="terminal-line" style="margin-top: 1rem;"><span class="prompt">dh4bi@portfolio:~$</span> ./init_system.sh</div>
-                <div class="terminal-line">[✓] Initializing secure connection...</div>
-                <div class="terminal-line">[✓] Loading portfolio modules...</div>
-                <div class="terminal-line">[✓] Systems operational</div>
-                <div class="terminal-line" style="margin-top: 1rem;"><span class="prompt">dh4bi@portfolio:~$</span> cat welcome.txt</div>
-                <div class="terminal-line">Welcome to DH4BI's domain. Type 'help' for available commands.</div>
-            </div>
+            <div class="terminal-output" id="output"></div>
             <div class="terminal-input">
                 <span class="prompt">dh4bi@portfolio:~$</span>
-                <input type="text" id="terminal-command" placeholder="Type a command..." autocomplete="off">
+                <input type="text" id="terminal-command" placeholder="" autocomplete="off">
                 <span class="cursor"></span>
             </div>
         </div>
 
         <!-- About -->
         <section id="about">
-            <h2> $ whoami</h2>
+            <h2>$ whoami</h2>
             <p>Cybersecurity engineer with expertise in offensive security, penetration testing, and red team operations. Specializing in Active Directory exploitation, network penetration, and avionics security testing. Currently pursuing CRTO certification and building practical skills through HackTheBox Pro Labs. Passionate about breaking things to make them more secure.</p>
         </section>
 
         <!-- Certifications -->
         <section id="certifications">
-            <h2> $ cat certifications.txt</h2>
+            <h2>$ cat certifications.txt</h2>
             <div class="cards">
                 <div class="card">
                     <h3><i class="fas fa-skull-crossbones"></i> OSCP+/OSCP</h3>
@@ -707,7 +575,7 @@ footer {
 
         <!-- Skills -->
         <section id="skills">
-            <h2> $ cat skills.conf</h2>
+            <h2>$ cat skills.conf</h2>
             <div class="skills-grid">
                 <div class="skill-category">
                     <h3><i class="fas fa-user-ninja"></i> Penetration Testing</h3>
@@ -752,7 +620,7 @@ footer {
 
         <!-- Projects -->
         <section id="projects">
-            <h2> $ ls -la projects/</h2>
+            <h2>$ ls -la projects/</h2>
             <div class="cards">
                 <div class="card">
                     <h3><i class="fas fa-flag-checkered"></i> CTF Writeups & Notes</h3>
@@ -825,7 +693,7 @@ footer {
 
         <!-- Contact -->
         <section id="contact">
-            <h2> $ cat contact.txt</h2>
+            <h2>$ cat contact.txt</h2>
             <div class="contact-links">
                 <a href="https://github.com/ericktafel1" class="contact-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                 <a href="https://www.linkedin.com/in/ericktafel" class="contact-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
@@ -837,43 +705,31 @@ footer {
     </div>
 
     <footer>
-        <p>&copy; 2025 Erick Tafel </p>
+        <p>&copy; 2025 Erick Tafel (DH4BI)</p>
         <p class="footer-prompt">
             <span>dh4bi@portfolio:~$</span>
             <span class="cursor"></span>
         </p>
     </footer>
 
+    <script>
+        const input = document.getElementById("terminal-command");
+        const output = document.getElementById("output");
 
-
-
-
-
-
-
-    <div class="terminal-output" id="output"></div>
-
-<script>
-const input = document.getElementById("terminal-command");
-const output = document.getElementById("output");
-
-// Responsive ASCII Banner
-const BANNER = `
+        const BANNER = `
 ██████╗ ██╗  ██╗██╗  ██╗██████╗ ██╗
 ██╔══██╗██║  ██║██║  ██║██╔══██╗██║
-██║  ██║███████║███████║██████╔╝██║
+██║  ██║███████║███████║███████╔╝██║
 ██║  ██║██╔══██║╚════██║██╔══██╗██║
-██████╔╝██║  ██║     ██║██████╔╝██║
-╚═════╝ ╚═╝  ╚═╝     ╚═╝╚═════╝ ╚═╝`;
+██████╔╝██║  ██║     ██║███████╔╝██║
+╚═════╝ ╚═╝  ╚═╝     ╚═╝╚══════╝ ╚═╝`;
 
-let cwd = "~";
+        let cwd = "~";
 
-// File System - Matching your HTML content
-const fs = {
-  "~": {
-    "welcome.txt": "Welcome to DH4BI's domain. Type 'help' for available commands.",
-    
-    "certifications.txt": `
+        const fs = {
+            "~": {
+                "welcome.txt": "Welcome to DH4BI's domain. Type 'help' for available commands.",
+                "certifications.txt": `
 [+] OFFENSIVE SECURITY
     - OSCP+/OSCP (Active Directory, Network Pentesting, Web App Security, Exploit Development, PrivEsc)
     
@@ -883,8 +739,7 @@ const fs = {
 
 [+] COMPTIA
     - CASP+, Security+, Network+, A+`,
-    
-    "skills.conf": `
+                "skills.conf": `
 # Penetration Testing
 network_pentest=true
 active_directory=true
@@ -893,176 +748,3 @@ web_app_security=true
 exploit_dev=true
 
 # Active Directory
-kerberoasting=true
-pass_the_hash=true
-bloodhound_analysis=true
-AS-REP_roasting=true
-
-# Tools
-frameworks=[Metasploit, C2]
-tools=[Kali, nxc, Nmap, ligolo, rustscan, feroxbuster, ...]
-scripting=[Python, PowerShell, Bash]`,
-    
-    "contact.txt": `
----------------------------------------------------------
-| GitHub   | https://github.com/ericktafel1             |
-| LinkedIn | https://www.linkedin.com/in/ericktafel     |
-| HTB      | https://app.hackthebox.com/profile/1321737 |
-| Email    | tafel_sec@protonmail.com                   |
----------------------------------------------------------`,
-    
-    "projects": {
-      "ctf_notes": "Detailed writeups for HTB & TryHackMe. Check GitHub.",
-      "azure_honeypot": "Deployed Azure Sentinel honeypot to map live attack vectors.",
-      "rpi_security": "Hardware security projects using Raspberry Pi.",
-      "auto_scripts.py": "Python & Bash automation for reconnaissance."
-    }
-  }
-};
-
-// Advanced Boot Sequence
-const bootLines = [
-    { text: "Initializing DH4BI Kernel 1.2.25...", color: "var(--text-secondary)" },
-    { text: "[ OK ] Loading secure_module...", color: "var(--neon-green)" },
-    { text: "[ OK ] Mounting /dev/sda1 on /home/dh4bi...", color: "var(--neon-green)" },
-    { text: "[WARN] Detecting intrusion prevention systems...", color: "orange" },
-    { text: "[ OK ] IPS bypassed successfully.", color: "var(--neon-green)" },
-    { text: "Starting Terminal UI...", color: "var(--text-secondary)" },
-    { text: "Access Granted.", color: "var(--neon-green)" }
-];
-
-async function print(text, color = "var(--neon-green)", isHtml = false) {
-  const line = document.createElement("div");
-  line.className = "terminal-line";
-  line.style.color = color;
-  
-  if (isHtml) {
-    line.innerHTML = text;
-  } else {
-    // preserve formatting for the ASCII tables in cat commands
-    line.style.whiteSpace = "pre-wrap"; 
-    line.textContent = text;
-  }
-  
-  output.appendChild(line);
-  output.scrollTop = output.scrollHeight;
-}
-
-async function bootSequence() {
-    // Clear initial output
-    output.innerHTML = "";
-    
-    // Play boot lines
-    for (const line of bootLines) {
-        await new Promise(r => setTimeout(r, 150 + Math.random() * 300));
-        print(line.text, line.color);
-    }
-    
-    await new Promise(r => setTimeout(r, 400));
-    
-    const bannerHTML = `<pre style="font-size: clamp(5px, 1.4vw, 14px); line-height: 1.1; color: var(--neon-green); margin-bottom: 1rem;">
-${BANNER}
-</pre>`;
-    print(bannerHTML, "var(--neon-green)", true);
-    print("Welcome back, dh4bi.", "var(--text-secondary)");
-    print("Type 'help' to see available commands.");
-}
-    
-function runCommand(cmd) {
-  const args = cmd.trim().split(/\s+/);
-  const command = args[0].toLowerCase();
-  
-  // Basic path handling (only supports 1 level deep for this demo)
-  const pathArg = args[1];
-
-  switch (command) {
-    case "whoami":
-       print("Erick Tafel - Cybersecurity Engineer | Red Team | Offensive Security");
-       break;
-
-    case "ls":
-      // Check current directory
-      let dirContent;
-      if (cwd === "~") {
-          dirContent = Object.keys(fs["~"]);
-      } else if (cwd === "~/projects") {
-          dirContent = Object.keys(fs["~"]["projects"]);
-      }
-      
-      // Filter out hidden files unless -a is used (simplified)
-      const visibleFiles = dirContent.join("    ");
-      print(visibleFiles);
-      break;
-
-    case "cd":
-      if (!pathArg || pathArg === "~") {
-        cwd = "~";
-      } else if (pathArg === "projects" && cwd === "~") {
-        cwd = "~/projects";
-      } else if (pathArg === ".." && cwd !== "~") {
-        cwd = "~";
-      } else {
-        print(`bash: cd: ${pathArg}: No such file or directory`);
-      }
-      break;
-
-    case "cat":
-      if (!pathArg) {
-          print("Usage: cat [filename]");
-          return;
-      }
-      
-      let content;
-      // Resolve file based on CWD
-      if (cwd === "~") {
-          if (fs["~"][pathArg]) content = fs["~"][pathArg];
-          // Allow cat projects/file.txt from root
-          else if (pathArg.startsWith("projects/") && fs["~"]["projects"][pathArg.split("/")[1]]) {
-              content = fs["~"]["projects"][pathArg.split("/")[1]];
-          }
-      } else if (cwd === "~/projects") {
-          if (fs["~"]["projects"][pathArg]) content = fs["~"]["projects"][pathArg];
-      }
-
-      if (typeof content === "string") {
-        print(content);
-      } else if (typeof content === "object") {
-        print(`cat: ${pathArg}: Is a directory`);
-      } else {
-        print(`cat: ${pathArg}: No such file or directory`);
-      }
-      break;
-
-    case "help":
-      print("Available commands:");
-      print("  whoami    - Display current user identity");
-      print("  ls        - List directory contents");
-      print("  cd [dir]  - Change directory");
-      print("  cat [file]- Display file contents");
-      print("  clear     - Clear terminal screen");
-      break;
-
-    case "clear":
-      output.innerHTML = "";
-      break;
-
-    case "":
-      break;
-
-    default:
-      print(`bash: ${command}: command not found`);
-  }
-}
-
-input.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    const cmd = input.value;
-    print(`dh4bi@portfolio:${cwd}$ ${cmd}`, "var(--text-secondary)");
-    runCommand(cmd);
-    input.value = "";
-  }
-});
-
-// Start the boot sequence on load
-window.onload = bootSequence;
-</script>
