@@ -39,57 +39,54 @@
 /* Updated Glitch Animation - 8s Loop */
 .glitch-title {
     position: relative;
-    font-size: 4rem; /* Adjust as needed */
-    font-weight: bold;
     color: var(--glitch-white);
-    letter-spacing: 3px;
+    font-size: 4rem;
+    letter-spacing: 5px;
+    /* This ensures the main text stays visible */
     z-index: 1;
 }
 
-/* Common styles for the glitch layers */
+/* Creating the glitch layers using pseudo-elements */
 .glitch-title::before,
 .glitch-title::after {
-    content: attr(data-text); /* Pulls text from HTML data-text attribute */
+    content: attr(data-text);
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.8;
+    z-index: -1;
 }
 
-/* The Cyan/Green Layer */
+/* The Green/Orange Slices */
 .glitch-title::before {
     left: 2px;
     text-shadow: -2px 0 var(--neon-green);
-    clip: rect(44px, 450px, 56px, 0); /* Fallback */
-    animation: glitch-anim-1 5s infinite linear alternate-reverse;
+    clip-path: inset(45% 0 45% 0);
+    animation: glitch-slice 5s infinite linear alternate-reverse;
 }
 
-/* The Magenta/Orange Layer */
+/* The White/Orange Slices */
 .glitch-title::after {
     left: -2px;
     text-shadow: -2px 0 var(--glitch-orange);
-    clip: rect(44px, 450px, 56px, 0); /* Fallback */
-    animation: glitch-anim-2 5s infinite linear alternate-reverse;
-}
-/* The Slicing Animations */
-@keyframes glitch-anim-1 {
-    0% { clip-path: inset(20% 0 30% 0); }
-    20% { clip-path: inset(60% 0 10% 0); }
-    40% { clip-path: inset(40% 0 50% 0); }
-    60% { clip-path: inset(80% 0 5% 0); }
-    80% { clip-path: inset(10% 0 70% 0); }
-    100% { clip-path: inset(30% 0 20% 0); }
+    clip-path: inset(10% 0 80% 0);
+    animation: glitch-slice 5s infinite linear alternate-reverse;
 }
 
-@keyframes glitch-anim-2 {
-    0% { clip-path: inset(15% 0 35% 0); }
-    20% { clip-path: inset(55% 0 15% 0); }
-    40% { clip-path: inset(45% 0 45% 0); }
-    60% { clip-path: inset(75% 0 10% 0); }
-    80% { clip-path: inset(5% 0 75% 0); }
-    100% { clip-path: inset(25% 0 25% 0); }
+/* The Slicing Animation (Sharp horizontal jumps) */
+@keyframes glitch-slice {
+    0% { clip-path: inset(80% 0 1% 0); transform: translate(-5px); }
+    10% { clip-path: inset(10% 0 70% 0); transform: translate(5px); }
+    20% { clip-path: inset(40% 0 43% 0); transform: translate(-5px); }
+    30% { clip-path: inset(80% 0 1% 0); transform: translate(5px); }
+    40% { clip-path: inset(10% 0 70% 0); transform: translate(-5px); }
+    50% { clip-path: inset(40% 0 43% 0); transform: translate(5px); }
+    60% { clip-path: inset(50% 0 5% 0); transform: translate(-5px); }
+    70% { clip-path: inset(10% 0 70% 0); transform: translate(5px); }
+    80% { clip-path: inset(40% 0 43% 0); transform: translate(-5px); }
+    90% { clip-path: inset(10% 0 25% 0); transform: translate(5px); }
+    100% { clip-path: inset(25% 0 10% 0); transform: translate(-5px); }
 }
         
 header {
