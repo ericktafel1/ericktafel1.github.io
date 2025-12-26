@@ -259,12 +259,17 @@ header {
     background: #000;
     border: 2px solid var(--neon-green);
     border-radius: 8px;
-    padding: 1rem;
-    margin: 0.5rem 0; /* Reduced top and bottom margin */
-    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+    padding: 10px; /* Reduced for mobile */
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    max-height: 600px; /* Limits height so it doesn't grow forever */
+    overflow: hidden; /* Prevents horizontal spill */
     width: 100%;
-    min-height: 500px;
 }
+
+
 
 .terminal-header {
     display: flex;
@@ -282,13 +287,13 @@ header {
 }
 
         .terminal-output {
-            color: var(--neon-green);
-            font-size: 0.95rem; /* Slightly larger text */
-            min-height: 450px;
-            max-height: 600px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-        }
+    flex: 1;
+    overflow-y: auto; /* Scroll up and down */
+    overflow-x: hidden; /* Stop horizontal scrolling */
+    word-wrap: break-word; /* Forces long text to wrap */
+    word-break: break-all;
+    font-size: 0.85rem; /* Slightly smaller for mobile */
+}
 
         .terminal-line {
             margin: 0.5rem 0;
