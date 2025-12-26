@@ -1079,17 +1079,17 @@ case "cd":
           return;
       }
       
-      let content;
-      // Resolve file based on CWD
-      if (cwd === "~") {
-          if (fs["~"][pathArg]) content = fs["~"][pathArg];
-          // Allow cat projects/file.txt from root
-          else if (pathArg.startsWith("projects/") && fs["~"]["projects"][pathArg.split("/")[1]]) {
-              content = fs["~"]["projects"][pathArg.split("/")[1]];
+      // Navigate to the current directory in the virtual FS
+      let currentDir = fs["~"];
+      const pathParts = cwd.split('/').slice(1); // Remove the "~"
+      pathParts.forEach(part => {
+          if (part && currentDir[part]) {
+              currentDir = currentDir[part];
           }
-      } else if (cwd === "~/projects") {
-          if (fs["~"]["projects"][pathArg]) content = fs["~"]["projects"][pathArg];
-      }
+      });
+
+      // Check if the file exists in this directory
+      const content = currentDir[pathArg];
 
       if (typeof content === "string") {
         print(content);
