@@ -6,35 +6,69 @@
     <title>Erick Tafel | Cybersecurity Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .top-nav {
+.hacker-nav {
     position: fixed;
-    top: 0;
-    right: 0;
-    padding: 1rem 2rem;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    border-bottom: 1px solid var(--neon-green);
-}
-
-.nav-links {
+    top: 20px;
+    right: 20px;
+    z-index: 9999; /* Ensures it stays above everything */
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
-.nav-links a {
-    color: var(--text-primary);
+/* The small square hacker symbol */
+.nav-toggle {
+    width: 50px;
+    height: 50px;
+    background: #000;
+    border: 2px solid var(--neon-green);
+    color: var(--neon-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+    transition: all 0.3s ease;
+}
+
+.nav-toggle:hover {
+    box-shadow: 0 0 20px var(--neon-green);
+    background: var(--neon-green);
+    color: #000;
+}
+
+/* The hidden menu container */
+.nav-menu {
+    margin-top: 10px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid var(--neon-green);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transform: translateX(120%); /* Hidden by default */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* The active state (when clicked) */
+.hacker-nav.active .nav-menu {
+    transform: translateX(0);
+}
+
+.nav-menu a {
+    color: var(--glitch-white);
     text-decoration: none;
     font-size: 0.9rem;
-    text-transform: uppercase;
+    letter-spacing: 2px;
     transition: 0.3s;
 }
 
-.nav-links a:hover {
+.nav-menu a:hover {
     color: var(--neon-green);
-    text-shadow: 0 0 10px var(--neon-green);
+    text-shadow: 0 0 5px var(--neon-green);
 }
-
 @media (max-width: 768px) {
     .top-nav { padding: 0.5rem; width: 100%; justify-content: center; }
     .nav-links { gap: 0.8rem; font-size: 0.7rem; }
@@ -1111,67 +1145,8 @@ input.addEventListener("keydown", e => {
 // Added this to make sure focus works even if they click outside
 document.addEventListener("click", () => input.focus());
 window.onload = bootSequence;
-    .hacker-nav {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999; /* Ensures it stays above everything */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-/* The small square hacker symbol */
-.nav-toggle {
-    width: 50px;
-    height: 50px;
-    background: #000;
-    border: 2px solid var(--neon-green);
-    color: var(--neon-green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 1.5rem;
-    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
-    transition: all 0.3s ease;
-}
-
-.nav-toggle:hover {
-    box-shadow: 0 0 20px var(--neon-green);
-    background: var(--neon-green);
-    color: #000;
-}
-
-/* The hidden menu container */
-.nav-menu {
-    margin-top: 10px;
-    background: rgba(0, 0, 0, 0.95);
-    border: 1px solid var(--neon-green);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    transform: translateX(120%); /* Hidden by default */
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* The active state (when clicked) */
-.hacker-nav.active .nav-menu {
-    transform: translateX(0);
-}
-
-.nav-menu a {
-    color: var(--glitch-white);
-    text-decoration: none;
-    font-size: 0.9rem;
-    letter-spacing: 2px;
-    transition: 0.3s;
-}
-
-.nav-menu a:hover {
-    color: var(--neon-green);
-    text-shadow: 0 0 5px var(--neon-green);
+    function toggleNav() {
+    const nav = document.getElementById('hackerNav');
+    nav.classList.toggle('active');
 }
 </script>
