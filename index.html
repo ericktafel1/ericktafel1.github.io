@@ -569,6 +569,27 @@
                 padding: 0.3rem 0.8rem;
             }
         }
+
+
+        html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1; /* This pushes the footer down by taking up all available space */
+}
+
+footer {
+    margin-top: auto; /* Final insurance to keep it at the bottom */
+}
     </style>
 </head>
 <body>
