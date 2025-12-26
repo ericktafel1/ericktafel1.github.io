@@ -130,15 +130,14 @@
             }
         }
         
-        /* Header */
-        header {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, #0a0a0a 100%);
-            border-bottom: 3px solid var(--neon-green);
-            margin-bottom: 3rem;
-            position: relative;
-        }
+header {
+    text-align: center;
+    padding: 2rem 2rem; /* Reduced padding from 4rem */
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #0a0a0a 100%);
+    border-bottom: 3px solid var(--neon-green);
+    margin-bottom: 1rem; /* This is the main gap fix */
+    position: relative;
+}
 
         .alias {
             font-size: 0.9rem;
@@ -228,16 +227,16 @@
         }
 
         /* Terminal */
-        .terminal {
-            background: #000;
-            border: 2px solid var(--neon-green);
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 2rem 0;
-            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
-            width: 100%;
-            min-height: 500px;
-        }
+.terminal {
+    background: #000;
+    border: 2px solid var(--neon-green);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0; /* Reduced top and bottom margin */
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+    width: 100%;
+    min-height: 500px;
+}
 
 .terminal-header {
     display: flex;
