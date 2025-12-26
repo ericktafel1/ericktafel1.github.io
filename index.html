@@ -846,6 +846,9 @@ let cwd = "~";
 // File System - Matching your HTML content
 const fs = {
   "~": {
+    ".hidden_flag.txt": "CONGRATULATIONS! You found the hidden operator logs. [THREAT LEVEL: REDACTED] [PASSWORD REVEALED: 42f749ade7f9e195bf475f37a44cafcb]", // Add this hidden file
+    "welcome.txt": "Welcome to DH4BI's domain. Type 'help' for available commands.",
+    // ... rest of your files
     "welcome.txt": "Welcome to DH4BI's domain. Type 'help' for available commands.",
     
     "certifications.txt": `
@@ -958,17 +961,21 @@ function runCommand(cmd) {
        break;
 
     case "ls":
-      // Check current directory
+      const showHidden = args.includes("-a"); // Check for the -a flag
       let dirContent;
+      
       if (cwd === "~") {
           dirContent = Object.keys(fs["~"]);
       } else if (cwd === "~/projects") {
           dirContent = Object.keys(fs["~"]["projects"]);
       }
       
-      // Filter out hidden files unless -a is used (simplified)
-      const visibleFiles = dirContent.join("    ");
-      print(visibleFiles);
+      // Filter logic: only show files starting with "." if showHidden is true
+      const filteredFiles = dirContent.filter(file => showHidden || !file.startsWith("."));
+      
+      if (filteredFiles.length > 0) {
+          print(filteredFiles.join("    "));
+      }
       break;
 
     case "cd":
