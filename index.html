@@ -824,196 +824,127 @@
             <span class="cursor"></span>
         </p>
     </footer>
+
+
+
+
+
+
+
+
+    <div class="terminal-output" id="output"></div>
+
 <script>
 const input = document.getElementById("terminal-command");
 const output = document.getElementById("output");
 
-/* =======================
-   ASCII BANNER
-======================= */
+// Responsive ASCII Banner
 const BANNER = `
 ██████╗ ██╗  ██╗██╗  ██╗██████╗ ██╗
 ██╔══██╗██║  ██║██║  ██║██╔══██╗██║
 ██║  ██║███████║███████║██████╔╝██║
 ██║  ██║██╔══██║╚════██║██╔══██╗██║
 ██████╔╝██║  ██║     ██║██████╔╝██║
-╚═════╝ ╚═╝  ╚═╝     ╚═╝╚═════╝ ╚═╝
-;
+╚═════╝ ╚═╝  ╚═╝     ╚═╝╚═════╝ ╚═╝`;
 
-/* =======================
-   TERMINAL STATE
-======================= */
 let cwd = "~";
-let history = [];
-let historyIndex = 0;
-
-/* =======================
-   FAKE FILESYSTEM
-======================= */
 const fs = {
   "~": {
-    "about.txt": "Cybersecurity Engineer focused on Offensive Security, Active Directory, and Red Team operations.",
-    "skills.txt": "Kerberoasting, AS-REP Roasting, BloodHound, Mimikatz, Web Pentesting, Network Attacks",
+    "about.txt": "Cybersecurity Engineer focused on Offensive Security.",
     "projects": {
-      "ctf.txt": "HackTheBox | Proving Grounds | TryHackMe writeups and notes",
-      "azure.txt": "Azure Honeypot with SIEM monitoring"
+      "ctf_notes.txt": "Check my GitHub for HTB writeups.",
+      ".hidden": {
+        "flag.txt": "MD5: 42f7491d90f6e52c8034731b3433a005" // MD5 for Password123
+      }
     }
   }
 };
 
-/* =======================
-   HELPERS
-======================= */
-function print(text = "") {
+// Simulation of the p3ta00 boot sequence
+const bootLines = [
+    "Initializing DH4BI Kernel 1.2.25...",
+    "Loading secure_module... [ OK ]",
+    "Mounting /dev/sda1 on /home/dh4bi... [ OK ]",
+    "Detecting intrusion prevention systems... [ NONE ]",
+    "Starting Terminal UI...",
+    "Welcome, User. System is ready."
+];
+
+async function print(text, color = "var(--neon-green)", isHtml = false) {
   const line = document.createElement("div");
   line.className = "terminal-line";
-  line.textContent = text;
-  output.appendChild(line);
-}
-
-function printPrompt(cmd) {
-  const line = document.createElement("div");
-  line.className = "terminal-line";
-  line.innerHTML = `<span class="prompt">dh4bi@portfolio:${cwd}$</span> ${cmd}`;
-  output.appendChild(line);
-}
-
-function resolvePath(path) {
-  if (!path || path === "~") return fs["~"];
-  
-  let current = cwd === "~" ? fs["~"] : fs[cwd];
-  const parts = path.split("/").filter(p => p);
-
-  for (let part of parts) {
-    if (part === "..") {
-      current = fs["~"]; // simple shell: parent of any folder is home
-    } else if (current[part]) {
-      current = current[part];
-    } else {
-      return null;
-    }
+  line.style.color = color;
+  if (isHtml) {
+    line.innerHTML = text;
+  } else {
+    line.textContent = text;
   }
-  return current;
+  output.appendChild(line);
+  output.scrollTop = output.scrollHeight;
 }
 
-/* =======================
-   COMMAND HANDLER
-======================= */
+async function bootSequence() {
+    for (const line of bootLines) {
+        await new Promise(r => setTimeout(r, 150));
+        print("[*] " + line);
+    }
+    // Print Banner with smaller pre tag for mobile
+    const bannerPre = `<pre style="font-size: clamp(4px, 1.5vw, 12px); line-height: 1; margin: 10px 0;">${BANNER}</pre>`;
+    print(bannerPre, "var(--neon-green)", true);
+    print("Type 'help' to begin.", "var(--glitch-cyan)");
+}
+
 function runCommand(cmd) {
-  const parts = cmd.split(" ").filter(p => p);
+  const parts = cmd.toLowerCase().split(" ");
   const command = parts[0];
-  const arg = parts.slice(1).join(" ");
+  const arg = parts[1];
 
   switch (command) {
     case "help":
-      print("Available commands:");
-      print("  banner   help   whoami   ls   cd   cat   clear");
+      print("Available: ls, cd, cat, clear, whoami, help");
       break;
-
-    case "banner":
-      BANNER.trim().split("\n").forEach(l => print(l));
-      break;
-
     case "whoami":
-      print("Erick Tafel — Cybersecurity Engineer");
+      print("Erick Tafel - Red Teamer / Security Researcher");
       break;
-
-    case "ls": {
-      const dir = resolvePath(arg || cwd);
-      if (dir && typeof dir === "object") {
-        Object.keys(dir).forEach(k => print(k));
-      } else {
-        print("No such directory");
-      }
-      break;
-    }
-
-    case "cd": {
-      if (!arg || arg === "~") {
-        cwd = "~";
-      } else {
-        const dir = resolvePath(arg);
-        if (dir && typeof dir === "object") {
-          cwd = arg;
-        } else {
-          print("No such directory");
-        }
-      }
-      break;
-    }
-
-    case "cat": {
-      const file = resolvePath(arg);
-      if (typeof file === "string") {
-        print(file);
-      } else if (typeof file === "object") {
-        print(`${arg}: is a directory`);
-      } else {
-        print("File not found");
-      }
-      break;
-    }
-
     case "clear":
       output.innerHTML = "";
       break;
-
+    case "ls":
+        let target = (cwd === "~") ? fs["~"] : fs["~"]["projects"];
+        if (arg === "-a") {
+            print(Object.keys(target).join("    "));
+        } else {
+            print(Object.keys(target).filter(f => !f.startsWith(".")).join("    "));
+        }
+        break;
+    case "cd":
+        if (arg === "projects") cwd = "~/projects";
+        else if (arg === ".." || arg === "~") cwd = "~";
+        else if (arg === ".hidden" && cwd === "~/projects") cwd = "~/projects/.hidden";
+        else print("Directory not found.");
+        break;
+    case "cat":
+        if (arg === "flag.txt" && cwd === "~/projects/.hidden") {
+            print("42f7491d90f6e52c8034731b3433a005", "var(--glitch-pink)");
+        } else if (arg === "about.txt" && cwd === "~") {
+            print(fs["~"]["about.txt"]);
+        } else {
+            print("File not found or access denied.");
+        }
+        break;
     default:
       print(`Command not found: ${command}`);
-      print("Type 'help' for available commands.");
   }
 }
-    
-/* =======================
-   INPUT LISTENER
-======================= */
+
 input.addEventListener("keydown", e => {
   if (e.key === "Enter") {
-    const cmd = input.value.trim();
-    if (!cmd) return;
-
-    history.push(cmd);
-    historyIndex = history.length;
-
-    printPrompt(cmd);
+    const cmd = input.value;
+    print(`dh4bi@portfolio:${cwd}$ ${cmd}`, "var(--text-secondary)");
     runCommand(cmd);
-
     input.value = "";
-    output.scrollTop = output.scrollHeight;
-  }
-
-  // Command history
-  if (e.key === "ArrowUp") {
-    if (historyIndex > 0) {
-      historyIndex--;
-      input.value = history[historyIndex];
-    }
-  }
-
-  if (e.key === "ArrowDown") {
-    if (historyIndex < history.length - 1) {
-      historyIndex++;
-      input.value = history[historyIndex];
-    } else {
-      input.value = "";
-    }
   }
 });
 
-/* =======================
-   AUTOFOCUS
-======================= */
-document.querySelector(".terminal").addEventListener("click", () => {
-  input.focus();
-});
-
-/* =======================
-   INITIAL BOOT
-======================= */
-window.onload = () => {
-  BANNER.trim().split("\n").forEach(l => print(l));
-  print("");
-  print("Type 'help' to see available commands.");
-  output.scrollTop = output.scrollHeight;
-};
+window.onload = bootSequence;
 </script>
