@@ -671,7 +671,7 @@ footer {
     <div class="terminal-output" id="output"></div>
     
     <div class="terminal-input">
-    <span class="prompt">dh4bi@portfolio:~$</span>
+    <span class="prompt">g1gs@portfolio:~$</span>
     <div class="input-wrapper">
         <input type="text" id="terminal-command" autofocus autocomplete="off">
         <span class="block-cursor"></span>
@@ -933,7 +933,7 @@ footer {
     <footer>
         <p>&copy; 2025 Erick Tafel </p>
         <p class="footer-prompt">
-            <span>dh4bi@portfolio:~$</span>
+            <span>g1gs@portfolio:~$</span>
             <span class="cursor"></span>
         </p>
     </footer>
@@ -944,19 +944,19 @@ const input = document.getElementById("terminal-command");
 const output = document.getElementById("output");
 
 const BANNER = `
-██████╗ ██╗  ██╗██╗  ██╗██████╗ ██╗
-██╔══██╗██║  ██║██║  ██║██╔══██╗██║
-██║  ██║███████║███████║██████╔╝██║
-██║  ██║██╔══██║╚════██║██╔══██╗██║
-██████╔╝██║  ██║     ██║██████╔╝██║
-╚═════╝ ╚═╝  ╚═╝     ╚═╝╚═════╝ ╚═╝`;
+░██████╗░░░███╗░░░██████╗░░██████╗
+██╔════╝░░████║░░██╔════╝░██╔════╝
+██║░░██╗░██╔██║░░██║░░██╗░╚█████╗░
+██║░░╚██╗╚═╝██║░░██║░░╚██╗░╚═══██╗
+╚██████╔╝███████╗╚██████╔╝██████╔╝
+░╚═════╝░╚══════╝░╚═════╝░╚═════╝░`;
 
 let cwd = "~";
 
 const fs = {
   "~": {
     ".hidden_flag.txt": "CONGRATULATIONS! You found the hidden operator logs. [THREAT LEVEL: REDACTED] [PASSWORD REVEALED: 42f749ade7f9e195bf475f37a44cafcb]",
-    "welcome.txt": "Welcome to DH4BI's domain. Type 'help' for available commands.",
+    "welcome.txt": "Welcome to g1gs's domain. Type 'help' for available commands.",
     "certifications.txt": `
 [+] OFFENSIVE SECURITY
     - OSCP+/OSCP (Active Directory, Network Pentesting, Web App Security, Exploit Development, PrivEsc)
@@ -1012,7 +1012,7 @@ scripting=[Python, PowerShell, Bash]`,
             "BackupFiles": {
                 "ArchivedPasswords": {
                     "Hashes": {
-                        ".README.txt": "DH4BI{Im_In}"
+                        ".README.txt": "g1gs{Im_In}"
                     }
                 }
             }
@@ -1022,18 +1022,18 @@ scripting=[Python, PowerShell, Bash]`,
 };
 
 const bootLines = [
-    { text: "Initializing DH4BI Kernel 1.2.25...", color: "var(--text-secondary)" },
+    { text: "Initializing g1gs Kernel 1.2.25...", color: "var(--text-secondary)" },
     { text: "[ OK ] Loading secure_module...", color: "var(--neon-green)" },
-    { text: "[ OK ] Mounting /dev/sda1 on /home/dh4bi...", color: "var(--neon-green)" },
+    { text: "[ OK ] Mounting /dev/sda1 on /home/g1gs...", color: "var(--neon-green)" },
     { text: "[WARN] Detecting intrusion prevention systems...", color: "orange" },
     { text: "[ OK ] IPS bypassed successfully.", color: "var(--neon-green)" },
     { text: "SYSTEMS NOMINAL", color: "var(--glitch-white)" },
     { text: "Starting Terminal UI...", color: "var(--text-secondary)" },
     { text: "Access Granted.", color: "var(--neon-green)" },
-    { text: "dh4bi@portfolio:~$ cat /etc/operator.conf", color: "var(--neon-green)" },
+    { text: "g1gs@portfolio:~$ cat /etc/operator.conf", color: "var(--neon-green)" },
     { text: '[+] DESIGNATION="Cybersecurity Engineer"', color: "var(--neon-green)" },
     { text: '[+] SPECIALTY="Penetration Testing, Offensive Security"', color: "var(--neon-green)" },
-    { text: "dh4bi@portfolio:~$ systemctl status --all", color: "var(--neon-green)" },
+    { text: "g1gs@portfolio:~$ systemctl status --all", color: "var(--neon-green)" },
     { text: "[+] Offensive capabilities: READY", color: "var(--neon-green)" },
     { text: "[+] Defense protocols: ACTIVE", color: "var(--neon-green)" },
     { text: "[+] Intel gathering: OPERATIONAL", color: "var(--neon-green)" },
@@ -1073,7 +1073,7 @@ async function bootSequence() {
     await new Promise(r => setTimeout(r, 500));
     const bannerHTML = `<pre style="font-size: clamp(4px, 1.2vw, 14px); line-height: 1; color: var(--neon-green); white-space: pre;">${BANNER}</pre>`;
     print(bannerHTML, "var(--neon-green)", true);
-    print("Welcome back, dh4bi.", "var(--text-secondary)");
+    print("Welcome back, g1gs.", "var(--text-secondary)");
     print("Type 'help' to see available commands.");
 }
 
@@ -1149,7 +1149,7 @@ function runCommand(cmd) {
 input.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         const cmd = input.value;
-        print(`dh4bi@portfolio:${cwd}$ ${cmd}`, "var(--text-secondary)");
+        print(`g1gs@portfolio:${cwd}$ ${cmd}`, "var(--text-secondary)");
         runCommand(cmd);
         input.value = "";
     }
