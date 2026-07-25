@@ -1066,7 +1066,7 @@ const bootLines = [
     { text: " ", color: "var(--neon-green)" }
 ];
 
-async function print(text, color = "var(--neon-green)", isHtml = false) {
+async function printLine(text, color = "var(--neon-green)", isHtml = false) {
     const line = document.createElement("div");
     line.className = "terminal-line";
     line.style.color = color;
@@ -1094,13 +1094,13 @@ async function bootSequence() {
     output.innerHTML = "";
     for (const line of bootLines) {
         await new Promise(r => setTimeout(r, 100));
-        print(line.text, line.color);
+        printLine(line.text, line.color);
     }
     await new Promise(r => setTimeout(r, 500));
     const bannerHTML = `<pre style="font-size: clamp(4px, 1.2vw, 14px); line-height: 1; color: var(--neon-green); white-space: pre;">${BANNER}</pre>`;
-    print(bannerHTML, "var(--neon-green)", true);
-    print("Welcome back, g1gs.", "var(--text-secondary)");
-    print("Type 'help' to see available commands.");
+    printLine(bannerHTML, "var(--neon-green)", true);
+    printLine("Welcome back, g1gs.", "var(--text-secondary)");
+    printLine("Type 'help' to see available commands.");
 }
 
 function runCommand(cmd) {
@@ -1110,14 +1110,14 @@ function runCommand(cmd) {
 
     switch (command) {
         case "whoami":
-            print("Erick Tafel - Cybersecurity Engineer | Red Team | Offensive Security");
+            printLine("Erick Tafel - Cybersecurity Engineer | Red Team | Offensive Security");
             break;
 
         case "ls":
             const lsFolder = getCurrentFolder();
             const showHidden = args.includes("-l");
             const files = Object.keys(lsFolder).filter(f => showHidden || !f.startsWith("."));
-            print(files.join("    "));
+            printLine(files.join("    "));
             break;
 
         case "cd":
@@ -1134,30 +1134,30 @@ function runCommand(cmd) {
                 if (cdFolder[pathArg] && typeof cdFolder[pathArg] === "object") {
                     cwd = cwd === "~" ? `~/${pathArg}` : `${cwd}/${pathArg}`;
                 } else {
-                    print(`bash: cd: ${pathArg}: No such directory`);
+                    printLine(`bash: cd: ${pathArg}: No such directory`);
                 }
             }
             break;
 
         case "cat":
             if (!pathArg) {
-                print("Usage: cat [filename]");
+                printLine("Usage: cat [filename]");
                 return;
             }
             const catFolder = getCurrentFolder();
             const content = catFolder[pathArg];
 
             if (typeof content === "string") {
-                print(content);
+                printLine(content);
             } else if (typeof content === "object") {
-                print(`cat: ${pathArg}: Is a directory`);
+                printLine(`cat: ${pathArg}: Is a directory`);
             } else {
-                print(`cat: ${pathArg}: No such file or directory`);
+                printLine(`cat: ${pathArg}: No such file or directory`);
             }
             break;
 
         case "help":
-            print("Available commands: whoami, ls, cd, cat, clear");
+            printLine("Available commands: whoami, ls, cd, cat, clear");
             break;
 
         case "clear":
@@ -1168,14 +1168,14 @@ function runCommand(cmd) {
             break;
 
         default:
-            print(`bash: ${command}: command not found`);
+            printLine(`bash: ${command}: command not found`);
     }
 }
 
 input.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         const cmd = input.value;
-        print(`g1gs@portfolio:${cwd}$ ${cmd}`, "var(--text-secondary)");
+        printLine(`g1gs@portfolio:${cwd}$ ${cmd}`, "var(--text-secondary)");
         runCommand(cmd);
         input.value = "";
     }
