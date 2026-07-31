@@ -673,7 +673,7 @@ section > h2 { font-size:clamp(1.45rem,3vw,2rem); letter-spacing:-.04em; }
 .cards { gap:1.25rem; }
 .card,.skill-category { background:linear-gradient(145deg,rgba(17,27,21,.96),rgba(8,14,10,.96)); border:1px solid var(--line); box-shadow:0 14px 35px rgba(0,0,0,.2); }
 .card { padding:1.6rem; overflow:hidden; }
-.card:hover { transform:translateY(-4px); box-shadow:0 18px 45px rgba(0,0,0,.38),0 0 22px rgba(0,255,65,.08); }
+.card:hover { box-shadow:0 24px 55px rgba(0,0,0,.48),0 0 28px rgba(0,255,65,.12); }
 .card p:not(.card-meta),.skill-category li,#about p { font-family:Arial,sans-serif; }
 .project-proof { display:grid; gap:.15rem; margin:1.1rem 0 0; padding:.75rem .85rem; border-left:2px solid var(--glitch-orange); background:rgba(255,140,0,.045); }
 .project-proof span { color:var(--glitch-orange); font-size:.66rem; letter-spacing:.15em; }
@@ -735,3 +735,39 @@ body::after { background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.55) 0 
 @keyframes ambient-shift { from { filter:hue-rotate(0deg) brightness(.95); } to { filter:hue-rotate(8deg) brightness(1.08); } }
 @keyframes seamless-scan { from { background-position:0 0,0 -100%,center; } to { background-position:0 0,0 220%,center; } }
  (prefers-reduced-motion:reduce) { body::before,body::after { animation:none !important; } }
+
+/* Cursor-reactive parallax cards, inspired by Andy Merskin's depth cards. */
+@media (hover:hover) and (pointer:fine) {
+    .card {
+        --card-rx:0deg; --card-ry:0deg;
+        --card-glow-x:50%; --card-glow-y:50%;
+        transform:perspective(900px) rotateX(var(--card-rx)) rotateY(var(--card-ry));
+        transform-style:preserve-3d;
+        transform-origin:center;
+        transition:transform 900ms cubic-bezier(.445,.05,.55,.95),border-color 300ms ease,box-shadow 900ms cubic-bezier(.23,1,.32,1);
+        will-change:transform;
+    }
+    .card::after {
+        content:""; position:absolute; inset:-1px; z-index:0;
+        border-radius:inherit; pointer-events:none; opacity:0;
+        background:radial-gradient(circle at var(--card-glow-x) var(--card-glow-y),rgba(150,255,176,.20),transparent 36%);
+        mix-blend-mode:screen;
+        transition:opacity 600ms cubic-bezier(.23,1,.32,1);
+    }
+    .card > * {
+        position:relative; z-index:1;
+        transform:translateZ(22px);
+        transition:transform 900ms cubic-bezier(.445,.05,.55,.95);
+    }
+    .card:hover,.card.is-tilting {
+        border-color:var(--neon-green);
+        transition:transform 90ms linear,border-color 300ms ease,box-shadow 600ms cubic-bezier(.23,1,.32,1);
+    }
+    .card:hover::before,.card.is-tilting::before,
+    .card:hover::after,.card.is-tilting::after { opacity:1; }
+    .card:hover > *,.card.is-tilting > * { transform:translateZ(34px); }
+}
+@media (prefers-reduced-motion:reduce) {
+    .card,.card > * { transform:none !important; transition:none !important; }
+    .card::after { display:none; }
+}

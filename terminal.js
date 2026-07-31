@@ -425,3 +425,38 @@ navToggle.addEventListener("click", () => toggleNav());
 navMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => toggleNav(false)));
 document.addEventListener("keydown", e => { if (e.key === "Escape") toggleNav(false); });
 
+// Cursor-driven depth for every content card, with no framework dependency.
+const cardMotionQuery = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+document.querySelectorAll(".card").forEach(card => {
+    let frame = 0;
+    const renderTilt = event => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+            const bounds = card.getBoundingClientRect();
+            const x = (event.clientX - bounds.left) / bounds.width;
+            const y = (event.clientY - bounds.top) / bounds.height;
+            card.style.setProperty("--card-rx", ((0.5 - y) * 18).toFixed(2) + "deg");
+            card.style.setProperty("--card-ry", ((x - 0.5) * 18).toFixed(2) + "deg");
+            card.style.setProperty("--card-glow-x", (x * 100).toFixed(1) + "%");
+            card.style.setProperty("--card-glow-y", (y * 100).toFixed(1) + "%");
+        });
+    };
+    const resetTilt = () => {
+        cancelAnimationFrame(frame);
+        card.classList.remove("is-tilting");
+        card.style.setProperty("--card-rx", "0deg");
+        card.style.setProperty("--card-ry", "0deg");
+        card.style.setProperty("--card-glow-x", "50%");
+        card.style.setProperty("--card-glow-y", "50%");
+    };
+    card.addEventListener("pointerenter", event => {
+        if (!cardMotionQuery.matches) return;
+        card.classList.add("is-tilting");
+        renderTilt(event);
+    });
+    card.addEventListener("pointermove", event => {
+        if (cardMotionQuery.matches) renderTilt(event);
+    });
+    card.addEventListener("pointerleave", resetTilt);
+    card.addEventListener("pointercancel", resetTilt);
+});
