@@ -726,3 +726,12 @@ body::after { content:""; position:fixed; inset:0; z-index:9998; pointer-events:
  warning-lights { 0%,100% { opacity:.18; transform:translateX(-8%); } 50% { opacity:.75; transform:translateX(8%); } }
  confetti-fall { 0% { transform:translate3d(0,-10vh,0) rotate(0); } 100% { transform:translate3d(var(--drift),112vh,0) rotate(var(--spin)); } }
 @media (prefers-reduced-motion:reduce) { body::before,body::after,.flag-breach .terminal,.final-breach .terminal,.capture-toast,.capture-toast.final-capture,.capture-toast.final-capture::before { animation:none !important; } .confetti-field { display:none; } .capture-toast { transform:translate(-50%,0); } }
+
+
+/* Seamless fixed cyber backdrop */
+body { background:#030604; }
+body::before { inset:0; transform:none; animation:ambient-shift 16s ease-in-out infinite alternate; opacity:1; background-image:radial-gradient(ellipse 75% 60% at 12% 8%,rgba(0,255,65,.13),transparent 68%),radial-gradient(ellipse 65% 70% at 88% 82%,rgba(0,217,255,.075),transparent 72%),linear-gradient(rgba(0,255,65,.026) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.026) 1px,transparent 1px),repeating-linear-gradient(118deg,transparent 0 110px,rgba(0,255,65,.022) 111px 112px,transparent 113px 220px); background-size:100% 100%,100% 100%,48px 48px,48px 48px,auto; background-position:center,center,0 0,0 0,0 0; background-repeat:no-repeat,no-repeat,repeat,repeat,repeat; }
+body::after { background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.55) 0 1px,transparent 1px 4px),linear-gradient(180deg,transparent 0 44%,rgba(0,255,65,.11) 49%,transparent 54% 100%),radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.35) 100%); background-size:100% 4px,100% 180%,100% 100%; background-position:0 0,0 -100%,center; background-repeat:repeat,no-repeat,no-repeat; animation:seamless-scan 10s linear infinite; }
+@keyframes ambient-shift { from { filter:hue-rotate(0deg) brightness(.95); } to { filter:hue-rotate(8deg) brightness(1.08); } }
+@keyframes seamless-scan { from { background-position:0 0,0 -100%,center; } to { background-position:0 0,0 220%,center; } }
+ (prefers-reduced-motion:reduce) { body::before,body::after { animation:none !important; } }
