@@ -30,6 +30,11 @@ const fs = {
         ".operator_note.txt": "OPERATOR NOTE: Start by enumerating hidden files in projects/. Every flag points toward the next phase.",
         "welcome.txt": "Operation Breadcrumb is a fictional five-flag Linux investigation. Type challenge for the briefing.",
         "projects": {
+          "SDRDemon": {
+            "README.txt": "SDRDemon — a Metasploit-inspired workbench for authorized RF testing. Select an SDR and attack profile, configure parameters, execute, and monitor the live spectrum. Repository status: PRIVATE / ACTIVE DEVELOPMENT.",
+            "capabilities.conf": "operations=[capture,replay,gps_simulation,jamming]\ninterfaces=[attack_profiles,spectrum_analyzer,sigmf_metadata,safety_link_budget,drone_detection,debug]\ncompatibility=[SigMF,GRC,gps-sdr-sim]\nlogging=prompt_on_exit",
+            "validation.log": "PASS HackRF One: capture, replay, GPS simulation/spoofing, jamming\nUNTESTED: other SDR hardware\nUNTESTED: drone-detection workflow"
+          },
           "ctf_notes": "Public CTF methodology and notes.",
           ".archive": {
             "flag01.txt": "g1gs{d0t_f1l3s_l34v3_f00tpr1nts}",
