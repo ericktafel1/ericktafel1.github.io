@@ -21,6 +21,11 @@ const CTF_FLAGS = [
     "g1gs{m1sc0nf1gur3d_b4ckups_br34k_b0und4r13s}",
     "g1gs{r00t_c4us3_1s_4lw4ys_th3_g04l}"
 ];
+const CTF_STATE_VERSION = "2026.08.1";
+if (localStorage.getItem("portfolio-ctf-version") !== CTF_STATE_VERSION) {
+    localStorage.removeItem("portfolio-ctf-flags");
+    localStorage.setItem("portfolio-ctf-version", CTF_STATE_VERSION);
+}
 let capturedFlags = new Set(JSON.parse(localStorage.getItem("portfolio-ctf-flags") || "[]"));
 
 const fs = {
@@ -352,7 +357,17 @@ function runCommand(cmd) {
             break;
 
         case "help":
-            printLine("Commands: challenge, status, help, whoami, id, pwd, ls [-la], ll, cd <path>, cat <file>, su <user> <password>, sudo -l, hint, submit <flag>, clear");
+            printLine("Commands: challenge, status, help, whoami, id, pwd, ls [-la], ll, cd <path>, cat <file>, su <user> <password>, sudo -l, hint, submit <flag>, resetctf, clear");
+            break;
+
+        case "resetctf":
+            capturedFlags.clear();
+            localStorage.removeItem("portfolio-ctf-flags");
+            currentUser = "g1gs";
+            isRoot = false;
+            cwd = "/home/g1gs";
+            updateProgress();
+            printLine("Operation Breadcrumb reset. Progress is now 0/5.", "var(--text-secondary)");
             break;
 
         case "clear":
@@ -394,6 +409,7 @@ function updateProgress() {
 
 document.querySelector(".terminal").addEventListener("click", () => input.focus());
 document.getElementById("year").textContent = new Date().getFullYear();
+updateProgress();
 window.addEventListener("load", bootSequence);
 
 const nav = document.getElementById("hackerNav");
