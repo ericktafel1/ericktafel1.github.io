@@ -297,7 +297,6 @@ header {
 .terminal-btn:nth-child(1) { background: #ff5f56; } /* Red */
 .terminal-btn:nth-child(2) { background: #ffbd2e; } /* Yellow */
 .terminal-btn:nth-child(3) { background: #27c93f; } /* Green */
-<div id="output" class="terminal-output"></div>
 /* Ensure the input starts immediately after the prompt */
 .terminal-input {
     display: flex; /* Keeps prompt and input side-by-side */
@@ -329,6 +328,20 @@ header {
     flex: 0 1 auto; /* Allows it to grow with text */
     caret-color: transparent; /* Hides default line */
 }
+
+.terminal-kicker { display:flex; justify-content:space-between; gap:1rem; padding:.65rem .8rem; color:var(--text-secondary); font-size:.78rem; border-bottom:1px solid rgba(0,255,65,.25); }
+.terminal-kicker strong, .ctf-progress { color:var(--neon-green); }
+.terminal:focus-within { box-shadow:0 0 28px rgba(0,255,65,.16); }
+.terminal-input { border-top:1px solid rgba(0,255,65,.25); padding-top:.65rem; }
+.terminal-line.success { color:#8dffab !important; border-left:2px solid var(--neon-green); padding-left:.65rem; }
+.terminal-line.error { color:#ff8b8b !important; }
+.terminal-line.muted { color:var(--text-secondary) !important; }
+.skip-link { position:fixed; left:1rem; top:-5rem; z-index:10000; background:var(--neon-green); color:#000; padding:.7rem 1rem; }
+.skip-link:focus { top:1rem; }
+.nav-toggle { font:inherit; }
+.nav-menu[aria-hidden="true"] { visibility:hidden; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline:2px solid #fff; outline-offset:4px; }
+ (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; } }
 
 .block-cursor {
     display: inline-block;
@@ -640,17 +653,16 @@ footer {
     </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <nav class="hacker-nav" id="hackerNav">
-    <div class="nav-toggle" onclick="toggleNav()">
-        <i class="fas fa-terminal"></i>
-    </div>
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu"><i class="fas fa-terminal"></i></button>
     
-    <div class="nav-menu">
-        <a href="#about" onclick="toggleNav()">WHOAMI</a>
-        <a href="#certifications" onclick="toggleNav()">CERTS</a>
-        <a href="#skills" onclick="toggleNav()">SKILLS</a>
-        <a href="#projects" onclick="toggleNav()">PROJECTS</a>
-        <a href="#contact" onclick="toggleNav()">CONTACT</a>
+    <div class="nav-menu" id="navMenu" aria-hidden="true">
+        <a href="#about">WHOAMI</a>
+        <a href="#certifications">CERTS</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#contact">CONTACT</a>
     </div>
 </nav>
     <header>
@@ -659,11 +671,12 @@ footer {
 
     </header>
 
-    <div class="container">
+    <main class="container" id="main-content">
         <!-- Interactive Terminal -->
 <div class="terminal">
     <div class="terminal-header">
         <div class="terminal-btn"></div>
+    <div class="terminal-kicker"><span><strong>OPERATION: BREADCRUMB</strong> · browser CTF</span><span class="ctf-progress" id="ctf-progress">0/1 flags</span></div>
         <div class="terminal-btn"></div>
         <div class="terminal-btn"></div>
     </div>
@@ -673,7 +686,7 @@ footer {
     <div class="terminal-input">
     <span class="prompt">g1gs@portfolio:~$</span>
     <div class="input-wrapper">
-        <input type="text" id="terminal-command" autofocus autocomplete="off">
+        <input type="text" id="terminal-command" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command">
         <span class="block-cursor"></span>
     </div>
 </div>
@@ -694,7 +707,7 @@ footer {
                     <span><i class="fa fa-angle-double-up"></i> THREAT LEVEL: ELEVATED</span>
                 </div>
                 <div class="status-ticker-item">
-                    <span><i class="fas fa-clock"></i> LAST SYNC: 2025.12</span>
+                    <span><i class="fas fa-clock"></i> LAST SYNC: LIVE</span>
                 </div>
                 <div class="status-ticker-item">
                     <span><i class="fas fa-crosshairs"></i> SECTOR: CYBER OPS</span>
@@ -714,7 +727,7 @@ footer {
                     <span><i class="fas fa-angle-double-up"></i> THREAT LEVEL: ELEVATED</span>
                 </div>
                 <div class="status-ticker-item">
-                    <span><i class="fas fa-clock"></i> LAST SYNC: 2025.12</span>
+                    <span><i class="fas fa-clock"></i> LAST SYNC: LIVE</span>
                 </div>
                 <div class="status-ticker-item">
                     <span><i class="fas fa-crosshairs"></i> SECTOR: CYBER OPS</span>
@@ -871,7 +884,7 @@ footer {
                         <span class="tag">CTF Challenges</span>
                         <span class="tag">Writeups</span>
                     </div>
-                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/CTFs" target="_blank"><i class="fas fa-external-link-alt"></i> View on GitHub →</a></p>
+                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/CTFs" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> View on GitHub →</a></p>
                 </div>
                 <div class="card">
                     <h3><i class="fas fa-broadcast-tower"></i> RF Playground & SDR Projects</h3>
@@ -882,8 +895,8 @@ footer {
                             <span class="tag">HackRF</span>
                             <span class="tag">RF Security</span>
                             <span class="tag">Signal Analysis</span>
-                </div>
-                <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/RF-Playground" target="_blank"><i class="fas fa-external-link-alt"></i> View Projects →</a></p>
+                        </div>
+                        <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/RF-Playground" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> View Projects →</a></p>
                 </div>
                 <div class="card">
                     <h3><i class="fas fa-cloud"></i> Azure Honeypot Project</h3>
@@ -894,7 +907,7 @@ footer {
                         <span class="tag">SIEM</span>
                         <span class="tag">Threat Intelligence</span>
                     </div>
-                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/AzureHoneypot" target="_blank"><i class="fas fa-external-link-alt"></i> View Documentation →</a></p>
+                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/AzureHoneypot" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> View Documentation →</a></p>
                 </div>
                 <div class="card">
                     <h3><i class="fab fa-raspberry-pi"></i> Raspberry Pi Security Projects</h3>
@@ -905,7 +918,7 @@ footer {
                         <span class="tag">Wireless Testing</span>
                         <span class="tag">Network Monitoring</span>
                     </div>
-                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/RaspberryPiProjects" target="_blank"><i class="fas fa-external-link-alt"></i> View Projects →</a></p>
+                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/RaspberryPiProjects" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> View Projects →</a></p>
                 </div>
                 <div class="card">
                     <h3><i class="fas fa-robot"></i> Security Automation Scripts</h3>
@@ -916,7 +929,7 @@ footer {
                         <span class="tag">Python</span>
                         <span class="tag">PowerShell</span>
                     </div>
-                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/Scripts" target="_blank"><i class="fas fa-external-link-alt"></i> View Scripts →</a></p>
+                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/Scripts" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> View Scripts →</a></p>
                 </div>
                 <div class="card">
                     <h3><i class="fab fa-python"></i> Python Projects</h3>
@@ -927,7 +940,7 @@ footer {
                         <span class="tag">Algorithms</span>
                         <span class="tag">Problem Solving</span>
                     </div>
-                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/CS50" target="_blank"><i class="fas fa-external-link-alt"></i> View Projects →</a></p>
+                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/CS50" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> View Projects →</a></p>
                 </div>
                 <div class="card">
                     <h3><i class="fas fa-laptop-code"></i> Front-End Development</h3>
@@ -938,7 +951,7 @@ footer {
                         <span class="tag">JavaScript</span>
                         <span class="tag">Web Security</span>
                     </div>
-                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/Front_End_Development" target="_blank"><i class="fas fa-external-link-alt"></i> GitHub →</a> | <a href="https://codepen.io/ericktafel" target="_blank"><i class="fab fa-codepen"></i> CodePen →</a></p>
+                    <p style="margin-top: 1rem;"><a href="https://github.com/ericktafel1/Front_End_Development" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> GitHub →</a> | <a href="https://codepen.io/ericktafel" target="_blank" rel="noopener noreferrer"><i class="fab fa-codepen"></i> CodePen →</a></p>
                 </div>
             </div>
         </section>
@@ -947,17 +960,17 @@ footer {
         <section id="contact">
             <h2> $ cat contact.txt</h2>
             <div class="contact-links">
-                <a href="https://github.com/ericktafel1" class="contact-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                <a href="https://www.linkedin.com/in/ericktafel" class="contact-link" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://app.hackthebox.com/profile/1321737" class="contact-link" target="_blank"><i class="fas fa-cube"></i> HackTheBox</a>
-                <a href="https://www.credly.com/users/erick-tafel/badges" class="contact-link" target="_blank"><i class="fas fa-award"></i> Credly</a>
+                <a href="https://github.com/ericktafel1" class="contact-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://www.linkedin.com/in/ericktafel" class="contact-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://app.hackthebox.com/profile/1321737" class="contact-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-cube"></i> HackTheBox</a>
+                <a href="https://www.credly.com/users/erick-tafel/badges" class="contact-link" target="_blank" rel="noopener noreferrer"><i class="fas fa-award"></i> Credly</a>
                 <a href="mailto:tafel_sec@protonmail.com" class="contact-link"><i class="fas fa-envelope"></i> Email</a>
             </div>
         </section>
-    </div>
+    </main>
 
     <footer>
-        <p>&copy; 2025 Erick Tafel </p>
+        <p>&copy; <span id="year"></span> Erick Tafel</p>
         <p class="footer-prompt">
             <span>g1gs@portfolio:~$</span>
             <span class="cursor"></span>
@@ -978,10 +991,14 @@ const BANNER = `
 ░╚═════╝░╚══════╝░╚═════╝░╚═════╝░`;
 
 let cwd = "~";
+let commandHistory = [];
+let historyIndex = 0;
+const CTF_FLAG = "g1gs{Im_In}";
+let ctfSolved = localStorage.getItem("portfolio-ctf-solved") === "true";
 
 const fs = {
   "~": {
-    ".hidden_flag.txt": "CONGRATULATIONS! You found the hidden operator logs. [THREAT LEVEL: REDACTED] [PASSWORD REVEALED: 42f749ade7f9e195bf475f37a44cafcb]",
+    ".operator_note.txt": "OPERATOR NOTE: Backups are never where they should be. Start in projects/ and enumerate hidden entries.",
     "welcome.txt": "Welcome to g1gs's domain. Type 'help' for available commands.",
     "certifications.txt": `
 [+] OFFENSIVE SECURITY
@@ -1066,9 +1083,9 @@ const bootLines = [
     { text: " ", color: "var(--neon-green)" }
 ];
 
-async function printLine(text, color = "var(--neon-green)", isHtml = false) {
+async function printLine(text, color = "var(--neon-green)", isHtml = false, extraClass = "") {
     const line = document.createElement("div");
-    line.className = "terminal-line";
+    line.className = "terminal-line" + (extraClass ? " " + extraClass : "");
     line.style.color = color;
     if (isHtml) {
         line.innerHTML = text;
@@ -1100,7 +1117,8 @@ async function bootSequence() {
     const bannerHTML = `<pre style="font-size: clamp(4px, 1.2vw, 14px); line-height: 1; color: var(--neon-green); white-space: pre;">${BANNER}</pre>`;
     printLine(bannerHTML, "var(--neon-green)", true);
     printLine("Welcome back, g1gs.", "var(--text-secondary)");
-    printLine("Type 'help' to see available commands.");
+    printLine("Type challenge to begin, or help for commands.");
+    updateProgress();
 }
 
 function runCommand(cmd) {
@@ -1109,13 +1127,17 @@ function runCommand(cmd) {
     const pathArg = args[1];
 
     switch (command) {
+        case "pwd":
+            printLine(cwd.replace("~", "/home/g1gs"));
+            break;
+
         case "whoami":
             printLine("Erick Tafel - Cybersecurity Engineer | Red Team | Offensive Security");
             break;
 
         case "ls":
             const lsFolder = getCurrentFolder();
-            const showHidden = args.includes("-l");
+            const showHidden = args.includes("-a") || args.includes("-la") || args.includes("-al");
             const files = Object.keys(lsFolder).filter(f => showHidden || !f.startsWith("."));
             printLine(files.join("    "));
             break;
@@ -1156,8 +1178,26 @@ function runCommand(cmd) {
             }
             break;
 
+        case "hint":
+            printLine(cwd === "~" ? "Hint 1/3: Hidden files often begin with a dot. Try ls -la." : cwd.includes("projects") ? "Hint 2/3: Follow the hidden tunnel and keep enumerating." : "Hint 3/3: cat the README, then submit the flag.", "orange");
+            break;
+
+        case "challenge":
+            printLine("OPERATION BREADCRUMB // Find the flag hidden in this virtual filesystem.\nRules: use terminal commands only. Try: ls, cd, cat, pwd, hint, submit <flag>\nNo network requests or real shell commands are executed.", "var(--text-primary)");
+            break;
+
+        case "submit":
+            if (!pathArg) { printLine("Usage: submit g1gs{...}", "#ff8b8b"); break; }
+            if (pathArg === CTF_FLAG) {
+                ctfSolved = true;
+                localStorage.setItem("portfolio-ctf-solved", "true");
+                updateProgress();
+                printLine("ACCESS GRANTED // Flag accepted. Nice enumeration, operator.", "#8dffab", false, "success");
+            } else { printLine("ACCESS DENIED // That flag is not valid.", "#ff8b8b", false, "error"); }
+            break;
+
         case "help":
-            printLine("Available commands: whoami, ls, cd, cat, clear");
+            printLine("Commands: challenge, help, whoami, pwd, ls [-la], cd <dir>, cat <file>, hint, submit <flag>, clear");
             break;
 
         case "clear":
@@ -1173,23 +1213,46 @@ function runCommand(cmd) {
 }
 
 input.addEventListener("keydown", e => {
+    if (["ArrowUp", "ArrowDown"].includes(e.key)) {
+        e.preventDefault();
+        if (!commandHistory.length) return;
+        historyIndex += e.key === "ArrowUp" ? -1 : 1;
+        historyIndex = Math.max(0, Math.min(commandHistory.length, historyIndex));
+        input.value = commandHistory[historyIndex] ? commandHistory[historyIndex] : "";
+        input.dispatchEvent(new Event("input"));
+        return;
+    }
     if (e.key === "Enter") {
-        const cmd = input.value;
-        printLine(`g1gs@portfolio:${cwd}$ ${cmd}`, "var(--text-secondary)");
+        const cmd = input.value.trim();
+        if (cmd) { commandHistory.push(cmd); historyIndex = commandHistory.length; }
+        printLine("g1gs@portfolio:" + cwd + "$ " + cmd, "var(--text-secondary)");
         runCommand(cmd);
         input.value = "";
     }
 });
 
-// Added this to make sure focus works even if they click outside
-document.addEventListener("click", () => input.focus());
-window.onload = bootSequence;
-    function toggleNav() {
-    const nav = document.getElementById('hackerNav');
-    nav.classList.toggle('active');
+function updateProgress() {
+    document.getElementById("ctf-progress").textContent = ctfSolved ? "1/1 flags · PWNED" : "0/1 flags";
 }
 
-    const cmdInput = document.getElementById("terminal-command");
+document.querySelector(".terminal").addEventListener("click", () => input.focus());
+document.getElementById("year").textContent = new Date().getFullYear();
+window.addEventListener("load", bootSequence);
+
+const nav = document.getElementById("hackerNav");
+const navToggle = nav.querySelector(".nav-toggle");
+const navMenu = document.getElementById("navMenu");
+function toggleNav(force) {
+    const active = typeof force === "boolean" ? force : !nav.classList.contains("active");
+    nav.classList.toggle("active", active);
+    navToggle.setAttribute("aria-expanded", String(active));
+    navMenu.setAttribute("aria-hidden", String(!active));
+}
+navToggle.addEventListener("click", () => toggleNav());
+navMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => toggleNav(false)));
+document.addEventListener("keydown", e => { if (e.key === "Escape") toggleNav(false); });
+
+const cmdInput = document.getElementById("terminal-command");
 
 cmdInput.addEventListener("input", function() {
     // 1ch is roughly the width of one character in a monospace font
