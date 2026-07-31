@@ -9,77 +9,64 @@ const BANNER = `
 ╚██████╔╝███████╗╚██████╔╝██████╔╝
 ░╚═════╝░╚══════╝░╚═════╝░╚═════╝░`;
 
-let cwd = "~";
+let cwd = "/home/g1gs";
+let currentUser = "g1gs";
+let isRoot = false;
 let commandHistory = [];
 let historyIndex = 0;
-const CTF_FLAG = "g1gs{Im_In}";
-let ctfSolved = localStorage.getItem("portfolio-ctf-solved") === "true";
+const CTF_FLAGS = [
+    "g1gs{d0t_f1l3s_l34v3_f00tpr1nts}",
+    "g1gs{c0nf1g_l34ks_b3c0m3_1n1t14l_4cc3ss}",
+    "g1gs{cr3d_r3us3_0p3ns_s1d3_d00rs}",
+    "g1gs{m1sc0nf1gur3d_b4ckups_br34k_b0und4r13s}",
+    "g1gs{r00t_c4us3_1s_4lw4ys_th3_g04l}"
+];
+let capturedFlags = new Set(JSON.parse(localStorage.getItem("portfolio-ctf-flags") || "[]"));
 
 const fs = {
-  "~": {
-    ".operator_note.txt": "OPERATOR NOTE: Backups are never where they should be. Start in projects/ and enumerate hidden entries.",
-    "welcome.txt": "Welcome to g1gs's domain. Type 'help' for available commands.",
-    "certifications.txt": `
-[+] OFFENSIVE SECURITY
-    - OSCP+/OSCP (Active Directory, Network Pentesting, Web App Security, Exploit Development, PrivEsc)
-    
-[+] TCM SECURITY
-    - PNPT (Active Directory, Network Pentesting, Web App Security, OWASP Top 10)
-    - PJPT (Active Directory, Network Pentesting)
-
-[+] COMPTIA
-    - CASP+, Security+, Network+, A+`,
-    "skills.conf": `
-# Penetration Testing
-network_pentest=true
-active_directory=true
-AV_evasion=true
-web_app_security=true
-exploit_dev=true
-
-# Active Directory
-kerberoasting=true
-pass_the_hash=true
-bloodhound_analysis=true
-AS-REP_roasting=true
-
-# Tools
-frameworks=[Metasploit, C2]
-tools=[Kali, nxc, Nmap, ligolo, rustscan, feroxbuster, ...]
-scripting=[Python, PowerShell, Bash]`,
-    "contact.txt": `
----------------------------------------------------------
-| GitHub   | https://github.com/ericktafel1             |
-| LinkedIn | https://www.linkedin.com/in/ericktafel     |
-| HTB      | https://app.hackthebox.com/profile/1321737 |
-| Email    | tafel_sec@protonmail.com                       |
----------------------------------------------------------`,
-    "usr": {
-        "bin": {
-            "nmap": "...no",
-            "metasploit": "...absolutely not"
-        },
-        "share": {
-            "wordlists": {
-                "rockyou.txt": "10 million passwords... Please wait..."
-            }
+  "/": {
+    "home": {
+      "g1gs": {
+        ".operator_note.txt": "OPERATOR NOTE: Start by enumerating hidden files in projects/. Every flag points toward the next phase.",
+        "welcome.txt": "Operation Breadcrumb is a fictional five-flag Linux investigation. Type challenge for the briefing.",
+        "projects": {
+          "ctf_notes": "Public CTF methodology and notes.",
+          ".archive": {
+            "flag01.txt": "g1gs{d0t_f1l3s_l34v3_f00tpr1nts}",
+            "next.txt": "A deployment ticket references /var/www/portal and warns that dotfiles were copied to production."
+          }
         }
+      },
+      "websvc": {
+        "user.txt": "g1gs{cr3d_r3us3_0p3ns_s1d3_d00rs}",
+        "ops-note.txt": "Run sudo -l. The approved backup utility may trust restore paths too much."
+      }
     },
-    "projects": {
-      "ctf_notes": "Detailed writeups for HTB & TryHackMe. Check GitHub.",
-      "azure_honeypot": "Deployed Azure Sentinel honeypot to map live attack vectors.",
-      "rpi_security": "Hardware security projects using Raspberry Pi.",
-      "auto_scripts.py": "Python & Bash automation for reconnaissance.",
-      ".ssh_tunnel": {
-            "BackupFiles": {
-                "ArchivedPasswords": {
-                    "Hashes": {
-                        ".README.txt": "g1gs{Im_In}"
-                    }
-                }
-            }
+    "var": {
+      "www": {
+        "portal": {
+          "index.html": "<h1>Operator Portal</h1>",
+          ".env": "APP_ENV=production\nSERVICE_USER=websvc\nSERVICE_PASSWORD=orbital-demo-47\nCONFIG_FLAG=g1gs{c0nf1g_l34ks_b3c0m3_1n1t14l_4cc3ss}",
+          "README.md": "Deployment root for the fictional operator portal. Secrets do not belong in web roots."
         }
-    }
+      }
+    },
+    "etc": {
+      "sudoers.d": {
+        "websvc": "websvc ALL=(root) NOPASSWD: /usr/local/bin/backupctl"
+      }
+    },
+    "opt": {
+      "backups": {
+        "manifest.txt": "restore_source=/var/www/portal\nrestore_target=/srv/portal\nAUDIT_FLAG=g1gs{m1sc0nf1gur3d_b4ckups_br34k_b0und4r13s}",
+        "operator-note.txt": "backupctl 0.8 performs privileged restores without canonicalizing the supplied source path."
+      }
+    },
+    "root": {
+      "root.txt": "g1gs{r00t_c4us3_1s_4lw4ys_th3_g04l}",
+      "engagement.txt": "Lab complete. Document the chain: exposure, credential reuse, excessive sudo rights, impact, and remediation."
+    },
+    "usr": { "local": { "bin": { "backupctl": "Fictional privileged backup utility. Use sudo -l for permitted syntax." } } }
   }
 };
 
@@ -94,7 +81,7 @@ const bootLines = [
     { text: "Access Granted.", color: "var(--neon-green)" },
     { text: "g1gs@portfolio:~$ cat /etc/operator.conf", color: "var(--neon-green)" },
     { text: '[+] DESIGNATION="Cybersecurity Engineer"', color: "var(--neon-green)" },
-    { text: '[+] SPECIALTY="Penetration Testing, Offensive Security"', color: "var(--neon-green)" },
+    { text: '[+] SPECIALTY="Web App Testing, Penetration Testing, Offensive Security"', color: "var(--neon-green)" },
     { text: "g1gs@portfolio:~$ systemctl status --all", color: "var(--neon-green)" },
     { text: "[+] Offensive capabilities: READY", color: "var(--neon-green)" },
     { text: "[+] Defense protocols: ACTIVE", color: "var(--neon-green)" },
@@ -116,13 +103,50 @@ async function printLine(text, color = "var(--neon-green)", isHtml = false, extr
     output.scrollTop = output.scrollHeight;
 }
 
-function solveChallenge(message) {
-    if (!ctfSolved) {
-        ctfSolved = true;
-        localStorage.setItem("portfolio-ctf-solved", "true");
+function captureFlags(content) {
+    const found = CTF_FLAGS.filter(flag => String(content).includes(flag));
+    let capturedNow = 0;
+    found.forEach(flag => {
+        if (!capturedFlags.has(flag)) { capturedFlags.add(flag); capturedNow += 1; }
+    });
+    if (capturedNow) {
+        localStorage.setItem("portfolio-ctf-flags", JSON.stringify(Array.from(capturedFlags)));
         updateProgress();
+        printLine("FLAG CAPTURED // " + capturedFlags.size + "/" + CTF_FLAGS.length + " objectives complete.", "#8dffab", false, "success");
     }
-    printLine(message, "#8dffab", false, "success");
+    return capturedNow;
+}
+
+function normalizePath(path) {
+    const absolute = path.startsWith("/") ? path : cwd + "/" + path;
+    const parts = [];
+    absolute.split("/").forEach(part => {
+        if (!part || part === ".") return;
+        if (part === "..") parts.pop(); else parts.push(part);
+    });
+    return "/" + parts.join("/");
+}
+
+function getNode(path) {
+    const normalized = normalizePath(path);
+    let node = fs["/"];
+    for (const part of normalized.split("/").filter(Boolean)) {
+        if (!node || typeof node !== "object" || !(part in node)) return undefined;
+        node = node[part];
+    }
+    return node;
+}
+
+function canAccess(path) {
+    const normalized = normalizePath(path);
+    if (normalized.startsWith("/root")) return isRoot;
+    if (normalized.startsWith("/home/websvc") || normalized.startsWith("/opt/backups")) return isRoot || currentUser === "websvc";
+    return true;
+}
+
+function displayCwd() {
+    const home = currentUser === "websvc" ? "/home/websvc" : "/home/g1gs";
+    return cwd === home ? "~" : cwd.startsWith(home + "/") ? "~" + cwd.slice(home.length) : cwd;
 }
 
 function formatLongListing(folder, showHidden) {
@@ -135,23 +159,20 @@ function formatLongListing(folder, showHidden) {
         const directory = typeof entry.value === "object";
         const extension = entry.name.split(".").pop();
         const executable = !directory && ["py", "sh"].includes(extension);
-        const mode = directory ? "drwxr-xr-x" : executable ? "-rwxr-xr-x" : entry.name.startsWith(".") ? "-rw-------" : "-rw-r--r--";
+        const mode = directory ? "drwxr-xr-x" : executable ? "-rwxr-xr-x" : entry.name === ".env" ? "-rw-r-----" : entry.name.startsWith(".") || entry.name === "root.txt" ? "-rw-------" : "-rw-r--r--";
+        const owner = cwd.startsWith("/root") || cwd.startsWith("/opt") || cwd.startsWith("/etc") ? "root" : cwd.startsWith("/var/www") ? "www-data" : cwd.startsWith("/home/websvc") ? "websvc" : "g1gs";
+        const group = owner === "www-data" ? "www-data" : owner === "root" ? "root" : "operators";
         const links = directory ? 2 : 1;
         const size = directory ? 4096 : new Blob([String(entry.value)]).size;
         const date = index % 2 ? "Jul 30 21:37" : "Jul 31 09:13";
-        lines.push(mode + " " + String(links).padStart(2) + " g1gs operators " + String(size).padStart(6) + " " + date + " " + entry.name + (directory ? "/" : ""));
+        lines.push(mode + " " + String(links).padStart(2) + " " + owner.padEnd(8) + " " + group.padEnd(9) + " " + String(size).padStart(6) + " " + date + " " + entry.name + (directory ? "/" : ""));
     });
     return lines.join("\n");
 }
 
-// Safely get the folder object for current path
+// Resolve the current virtual directory without touching the visitor device.
 function getCurrentFolder() {
-    let folder = fs["~"];
-    const parts = cwd.split('/').slice(1);
-    parts.forEach(part => {
-        if (part && folder[part]) folder = folder[part];
-    });
-    return folder;
+    return getNode(cwd);
 }
 
 async function bootSequence() {
@@ -175,11 +196,15 @@ function runCommand(cmd) {
 
     switch (command) {
         case "pwd":
-            printLine(cwd.replace("~", "/home/g1gs"));
+            printLine(cwd);
             break;
 
         case "whoami":
-            printLine("Erick Tafel - Cybersecurity Engineer | Red Team | Offensive Security");
+            printLine(currentUser);
+            break;
+
+        case "id":
+            printLine(isRoot ? "uid=0(root) gid=0(root) groups=0(root)" : currentUser === "websvc" ? "uid=1001(websvc) gid=1001(websvc) groups=1001(websvc),27(sudo)" : "uid=1000(g1gs) gid=1000(g1gs) groups=1000(g1gs),1002(operators)");
             break;
 
         case "ll":
@@ -193,60 +218,100 @@ function runCommand(cmd) {
             break;
         }
 
-        case "cd":
-            if (!pathArg || pathArg === "~") {
-                cwd = "~";
-            } else if (pathArg === "..") {
-                if (cwd !== "~") {
-                    const parts = cwd.split("/");
-                    parts.pop();
-                    cwd = parts.join("/");
-                }
+        case "cd": {
+            const destination = !pathArg || pathArg === "~" ? (currentUser === "websvc" ? "/home/websvc" : "/home/g1gs") : normalizePath(pathArg);
+            const target = getNode(destination);
+            if (!canAccess(destination)) {
+                printLine("bash: cd: " + pathArg + ": Permission denied", "#ff8b8b", false, "error");
+            } else if (target && typeof target === "object") {
+                cwd = destination;
             } else {
-                const cdFolder = getCurrentFolder();
-                if (cdFolder[pathArg] && typeof cdFolder[pathArg] === "object") {
-                    cwd = cwd === "~" ? `~/${pathArg}` : `${cwd}/${pathArg}`;
-                } else {
-                    printLine(`bash: cd: ${pathArg}: No such directory`);
-                }
+                printLine("bash: cd: " + pathArg + ": No such directory");
             }
             break;
+        }
 
-        case "cat":
-            if (!pathArg) {
-                printLine("Usage: cat [filename]");
-                return;
-            }
-            const catFolder = getCurrentFolder();
-            const content = catFolder[pathArg];
-
+        case "cat": {
+            if (!pathArg) { printLine("Usage: cat [filename]"); break; }
+            const targetPath = normalizePath(pathArg);
+            if (!canAccess(targetPath)) { printLine("cat: " + pathArg + ": Permission denied", "#ff8b8b", false, "error"); break; }
+            const content = getNode(targetPath);
             if (typeof content === "string") {
                 printLine(content);
-                if (content === CTF_FLAG) solveChallenge("FLAG CAPTURED // Reading the flag completed Operation Breadcrumb.");
+                captureFlags(content);
             } else if (typeof content === "object") {
-                printLine(`cat: ${pathArg}: Is a directory`);
+                printLine("cat: " + pathArg + ": Is a directory");
             } else {
-                printLine(`cat: ${pathArg}: No such file or directory`);
+                printLine("cat: " + pathArg + ": No such file or directory");
+            }
+            break;
+        }
+
+        case "hint": {
+            const hints = [
+                "Enumerate hidden entries under /home/g1gs/projects with ls -la.",
+                "The archive note names a production web root. Inspect dotfiles in /var/www/portal.",
+                "The config exposes a fictional service credential. Try: su websvc <password>.",
+                "As websvc, inspect ~/user.txt, ~/ops-note.txt, and sudo -l; then read the backup manifest through backupctl.",
+                "The fictional restore utility trusts paths. Try its restore action with ../../bin/sh, then inspect /root."
+            ];
+            printLine("Hint " + Math.min(capturedFlags.size + 1, 5) + "/5: " + hints[Math.min(capturedFlags.size, 4)], "orange");
+            break;
+        }
+
+        case "challenge":
+            printLine("OPERATION BREADCRUMB // Capture five unique flags across a fictional Linux host.\nPhases: enumerate → inspect web configuration → pivot users → audit sudo rights → demonstrate impact.\nCommands are simulated in-browser; no network requests, real credentials, or host commands are used. Type hint if blocked.", "var(--text-primary)");
+            break;
+
+        case "status":
+            printLine("Objectives: " + capturedFlags.size + "/" + CTF_FLAGS.length + " flags captured. Current identity: " + currentUser + ".");
+            break;
+
+        case "su":
+            if (args[1] === "websvc" && args[2] === "orbital-demo-47") {
+                currentUser = "websvc";
+                isRoot = false;
+                cwd = "/home/websvc";
+                printLine("Authentication successful. Switched to websvc.", "#8dffab");
+            } else {
+                printLine("su: Authentication failure. Usage in this lab: su <user> <password>", "#ff8b8b", false, "error");
             }
             break;
 
-        case "hint":
-            printLine(cwd === "~" ? "Hint 1/3: Hidden files often begin with a dot. Try ls -la." : cwd.includes("projects") ? "Hint 2/3: Follow the hidden tunnel and keep enumerating." : "Hint 3/3: cat the README, then submit the flag.", "orange");
+        case "sudo": {
+            if (args[1] === "-l") {
+                if (currentUser === "websvc") printLine("Matching Defaults entries for websvc:\n    env_reset, secure_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin\n\nUser websvc may run the following commands without a password:\n    (root) NOPASSWD: /usr/local/bin/backupctl");
+                else if (isRoot) printLine("User root may run all commands.");
+                else printLine("Sorry, user " + currentUser + " may not run sudo on portfolio-lab.", "#ff8b8b", false, "error");
+                break;
+            }
+            const backupCommand = args[1] === "/usr/local/bin/backupctl" || args[1] === "backupctl";
+            if (!backupCommand || (currentUser !== "websvc" && !isRoot)) { printLine("sudo: command not permitted", "#ff8b8b", false, "error"); break; }
+            if (args[2] === "--read-manifest") {
+                const manifest = getNode("/opt/backups/manifest.txt");
+                printLine(manifest);
+                captureFlags(manifest);
+            } else if (args[2] === "--restore" && args[3] === "../../bin/sh") {
+                currentUser = "root";
+                isRoot = true;
+                cwd = "/root";
+                printLine("SIMULATED PRIVILEGE ESCALATION // restore path escaped the allowlisted directory. Root shell granted.", "#8dffab", false, "success");
+            } else {
+                printLine("backupctl 0.8\nUsage: sudo backupctl --read-manifest | --restore <source>");
+            }
             break;
-
-        case "challenge":
-            printLine("OPERATION BREADCRUMB // Find the flag hidden in this virtual filesystem.\nRules: use terminal commands only. Try: ls, ls -la, ll, cd, cat, pwd, hint, submit <flag>\nNo network requests or real shell commands are executed.", "var(--text-primary)");
-            break;
+        }
 
         case "submit":
             if (!pathArg) { printLine("Usage: submit g1gs{...}", "#ff8b8b"); break; }
-            if (pathArg === CTF_FLAG) {
-                solveChallenge("ACCESS GRANTED // Flag accepted. Nice enumeration, operator.");
+            if (CTF_FLAGS.includes(pathArg)) {
+                const wasNew = captureFlags(pathArg);
+                if (!wasNew) printLine("Flag already captured.", "var(--text-secondary)");
             } else { printLine("ACCESS DENIED // That flag is not valid.", "#ff8b8b", false, "error"); }
             break;
 
         case "help":
-            printLine("Commands: challenge, help, whoami, pwd, ls [-la], ll, cd <dir>, cat <file>, hint, submit <flag>, clear");
+            printLine("Commands: challenge, status, help, whoami, id, pwd, ls [-la], ll, cd <path>, cat <file>, su <user> <password>, sudo -l, hint, submit <flag>, clear");
             break;
 
         case "clear":
@@ -274,15 +339,16 @@ input.addEventListener("keydown", e => {
     if (e.key === "Enter") {
         const cmd = input.value.trim();
         if (cmd) { commandHistory.push(cmd); historyIndex = commandHistory.length; }
-        printLine("g1gs@portfolio:" + cwd + "$ " + cmd, "var(--text-secondary)");
+        printLine(currentUser + "@portfolio:" + displayCwd() + "$ " + cmd, "var(--text-secondary)");
         runCommand(cmd);
-        document.querySelector(".prompt").textContent = "g1gs@portfolio:" + cwd + "$";
+        document.querySelector(".prompt").textContent = currentUser + "@portfolio:" + displayCwd() + "$";
         input.value = "";
     }
 });
 
 function updateProgress() {
-    document.getElementById("ctf-progress").textContent = ctfSolved ? "1/1 flags · PWNED" : "0/1 flags";
+    const complete = capturedFlags.size === CTF_FLAGS.length;
+    document.getElementById("ctf-progress").textContent = capturedFlags.size + "/" + CTF_FLAGS.length + " flags" + (complete ? " · PWNED" : "");
 }
 
 document.querySelector(".terminal").addEventListener("click", () => input.focus());

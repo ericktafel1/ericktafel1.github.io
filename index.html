@@ -33,6 +33,7 @@
         <p class="alias">operator: g1gs · Q2jDoG8gYuG6oW4h</p>
         <p class="subtitle">I test networks, applications, identity systems, and radio protocols—then turn the findings into practical security improvements.</p>
         <div class="roles" aria-label="Specialties">
+            <span class="role-tag">Web Application Testing</span>
             <span class="role-tag">Active Directory</span>
             <span class="role-tag">Red Team Operations</span>
             <span class="role-tag">Exploit Development</span>
@@ -45,6 +46,25 @@
     </header>
 
     <main class="container" id="main-content">
+        <!--
+        CTF MAINTAINER NOTES — SPOILERS
+
+        Flags:
+        1. g1gs{d0t_f1l3s_l34v3_f00tpr1nts}
+        2. g1gs{c0nf1g_l34ks_b3c0m3_1n1t14l_4cc3ss}
+        3. g1gs{cr3d_r3us3_0p3ns_s1d3_d00rs}
+        4. g1gs{m1sc0nf1gur3d_b4ckups_br34k_b0und4r13s}
+        5. g1gs{r00t_c4us3_1s_4lw4ys_th3_g04l}
+
+        Shorthand solution:
+        1. cd projects; ls -la; cd .archive; cat flag01.txt; cat next.txt
+        2. cd /var/www/portal; ls -la; cat .env
+        3. su websvc orbital-demo-47; cat user.txt; cat ops-note.txt
+        4. sudo -l; run sudo backupctl with the two-hyphen read-manifest option
+        5. run sudo backupctl with the two-hyphen restore option and ../../bin/sh; cat /root/root.txt
+
+        The phrase "two-hyphen" is used because literal consecutive hyphens are invalid inside HTML comments.
+        -->
         <!-- Interactive Terminal -->
 <div class="terminal">
     <div class="terminal-header" aria-hidden="true">
@@ -53,7 +73,7 @@
         <div class="terminal-btn"></div>
         <span class="terminal-title">g1gs@portfolio: ~/operation-breadcrumb</span>
     </div>
-    <div class="terminal-kicker"><span><strong>OPERATION: BREADCRUMB</strong> · browser CTF</span><span class="ctf-progress" id="ctf-progress">0/1 flags</span></div>
+    <div class="terminal-kicker"><span><strong>OPERATION: BREADCRUMB</strong> · browser CTF</span><span class="ctf-progress" id="ctf-progress">0/5 flags</span></div>
     
     <div class="terminal-output" id="output"></div>
     
@@ -192,7 +212,7 @@
                     <ul>
                         <li>Network Penetration Testing</li>
                         <li>RF Security / Wireless</li>
-                        <li>Web Application Security</li>
+                        <li>Web Application Penetration Testing</li>
                         <li>Vulnerability Assessment</li>
                         <li>Exploit Development</li>
                         <li>Python</li>
