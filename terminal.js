@@ -368,17 +368,3 @@ navToggle.addEventListener("click", () => toggleNav());
 navMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => toggleNav(false)));
 document.addEventListener("keydown", e => { if (e.key === "Escape") toggleNav(false); });
 
-const cmdInput = document.getElementById("terminal-command");
-
-cmdInput.addEventListener("input", function() {
-    // 1ch is roughly the width of one character in a monospace font
-    this.style.width = (this.value.length + 1) + "ch";
-});
-
-// Ensure it resets when command is sent
-cmdInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-        // ... your existing runCommand(cmd) logic ...
-        setTimeout(() => { cmdInput.style.width = "1ch"; }, 10);
-    }
-});

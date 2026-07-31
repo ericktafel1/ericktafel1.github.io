@@ -333,7 +333,7 @@ header {
 .nav-toggle { font:inherit; }
 .nav-menu[aria-hidden="true"] { visibility:hidden; }
 a:focus-visible, button:focus-visible, input:focus-visible { outline:2px solid #fff; outline-offset:4px; }
- (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; } }
 
 .block-cursor {
     display: inline-block;
@@ -681,3 +681,11 @@ section > h2 { font-size:clamp(1.45rem,3vw,2rem); letter-spacing:-.04em; }
 .tag { border-radius:999px; color:#bcebc7; }
 .contact-link { background:rgba(5,12,7,.7); }
 @media (max-width:768px) { .container{padding:0 1rem}.hero{min-height:500px;padding:5rem 1rem 4rem}.hero::after{width:330px;height:330px}.eyebrow{font-size:.62rem}.terminal{margin-top:-1.5rem}.terminal-title{display:none}.terminal-kicker{align-items:flex-start;flex-direction:column;gap:.2rem}section{margin:4.5rem 0}.cards{grid-template-columns:1fr}.card{padding:1.25rem} }
+
+
+/* Native terminal caret: stays aligned with typed text at every viewport size. */
+.terminal-input { gap:.55rem; align-items:baseline; }
+.prompt { margin-right:0; line-height:1.35; }
+.input-wrapper { min-width:0; flex:1; }
+#terminal-command { width:100%; min-width:0; flex:1 1 auto; line-height:1.35; caret-color:var(--neon-green); }
+.block-cursor { display:none; }
