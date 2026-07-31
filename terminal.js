@@ -108,6 +108,41 @@ async function printLine(text, color = "var(--neon-green)", isHtml = false, extr
     output.scrollTop = output.scrollHeight;
 }
 
+function triggerFlagEffect(isComplete) {
+    const toast = document.createElement("div");
+    toast.className = "capture-toast" + (isComplete ? " final-capture" : "");
+    toast.setAttribute("role", "status");
+    toast.innerHTML = isComplete
+        ? "<span>ROOT ACCESS ACHIEVED</span><strong>5 / 5 · SYSTEM PWNED</strong>"
+        : "<span>OBJECTIVE SECURED</span><strong>FLAG " + capturedFlags.size + " / " + CTF_FLAGS.length + " CAPTURED</strong>";
+    document.body.appendChild(toast);
+    document.body.classList.add(isComplete ? "final-breach" : "flag-breach");
+
+    if (isComplete) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti-field";
+        confetti.setAttribute("aria-hidden", "true");
+        const colors = ["#00ff41", "#ffffff", "#ff8c00", "#75b987", "#00d9ff"];
+        for (let i = 0; i < 100; i += 1) {
+            const piece = document.createElement("i");
+            piece.style.setProperty("--x", Math.random() * 100 + "vw");
+            piece.style.setProperty("--drift", (Math.random() * 30 - 15) + "vw");
+            piece.style.setProperty("--delay", Math.random() * 1.2 + "s");
+            piece.style.setProperty("--duration", (2.4 + Math.random() * 2.2) + "s");
+            piece.style.setProperty("--spin", (360 + Math.random() * 900) + "deg");
+            piece.style.background = colors[i % colors.length];
+            confetti.appendChild(piece);
+        }
+        document.body.appendChild(confetti);
+        window.setTimeout(() => confetti.remove(), 5200);
+    }
+
+    window.setTimeout(() => {
+        toast.remove();
+        document.body.classList.remove("flag-breach", "final-breach");
+    }, isComplete ? 4200 : 1900);
+}
+
 function captureFlags(content) {
     const found = CTF_FLAGS.filter(flag => String(content).includes(flag));
     let capturedNow = 0;
@@ -118,6 +153,7 @@ function captureFlags(content) {
         localStorage.setItem("portfolio-ctf-flags", JSON.stringify(Array.from(capturedFlags)));
         updateProgress();
         printLine("FLAG CAPTURED // " + capturedFlags.size + "/" + CTF_FLAGS.length + " objectives complete.", "#8dffab", false, "success");
+        triggerFlagEffect(capturedFlags.size === CTF_FLAGS.length);
     }
     return capturedNow;
 }
